@@ -17,6 +17,7 @@ namespace Logic
             this.sizeX = sizeX;
             this.sizeY = sizeY;
             Tasks = new List<Task>();
+            Balls = new List<Ball>();
         }
 
         public override void AddBalls(int number, int radius)
