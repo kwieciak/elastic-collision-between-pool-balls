@@ -6,17 +6,22 @@ namespace Logic
     {
         public static LogicAbstractAPI CreateAPIInstance()
         {
-            return new LogicAPI(); //tutaj pewnie bedzie trzeba przekazac jakies parametry
+            return new Board(1920,1080); //rozmiar jest randomowy, idk jaki powinien byc
         }
-        public abstract void AddBall(int x, int y, int radius); // dobre pytanie czy powinnismy w ogole ta funkcje robic
-                                                                      // bo mozna po prostu w CreateBoard przekazywac liczbe kulek do utworzenia
-                                                                      // i podawac ich promien, skoro potem i tak nie mozna wiecej kulek dodawac
 
-        public abstract void MoveBall();
 
-        public abstract void CreateBoard(int x, int y, int ballAmount); //ta funkcja chyba powinna tworzyc boarda i nowy thread
-                                                        // i tam powinna sie w srodku jakas logika dziac, ze np.
-                                                        // rusza tymi kulkami ktore sa w boardzie itd.
+        // API warstwy Logika powinno zawierać operacje interaktywne (np. twórz kule)...
+        public abstract void AddBalls(int number, int radius);
+
+        //... i reaktywne (okresowe wysłanie położenia kul).
+        public abstract void GetAllBallsPosition();
+
+
+
+
+
+
+
 
 
         // W INSTRUKCJI JEST COS O OKRESOWYM WYSYLANIU POLOZENIA KUL
