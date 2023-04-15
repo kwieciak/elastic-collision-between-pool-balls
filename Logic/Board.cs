@@ -13,7 +13,7 @@ namespace Logic
         public Board(int sizeX, int sizeY) {
             this.sizeX = sizeX;
             this.sizeY = sizeY;
-            this.Balls = new List<Ball>(); //chyba tak powinno to wygladac, idk
+            Balls = new List<Ball>();
         }
 
         public override void AddBalls(int number, int radius)
@@ -29,7 +29,7 @@ namespace Logic
         }
 
 
-        public void MoveBalls()
+        public override void MoveBalls()
         {
             foreach(Ball b in Balls)
             {
@@ -38,9 +38,24 @@ namespace Logic
             }
         }
 
-        public override void GetAllBallsPosition()
+        public override List<List<int>> GetAllBallsPosition()
         {
-            throw new NotImplementedException();
+            List<List<int>> positions = new List<List<int>>();
+            foreach (Ball b in Balls)
+            {
+                List<int> BallPosition = new List<int>
+                {
+                    b.PosX,
+                    b.PosY
+                };
+                positions.Add(BallPosition);
+            }
+            return positions;
+        }
+
+        public override void ClearBoard()
+        {
+            Balls.Clear();
         }
     }
 }

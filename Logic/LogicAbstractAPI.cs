@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Logic
 {
@@ -14,7 +15,13 @@ namespace Logic
         public abstract void AddBalls(int number, int radius);
 
         //... i reaktywne (okresowe wysłanie położenia kul).
-        public abstract void GetAllBallsPosition();
+
+        public abstract void MoveBalls();
+
+        public abstract void ClearBoard();
+
+        public abstract List<List<int>> GetAllBallsPosition();
+
 
 
 
