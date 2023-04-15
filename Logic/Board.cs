@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Logic
 {
@@ -9,34 +11,54 @@ namespace Logic
         public int sizeX { get; set; }
         public int sizeY { get; set; }
         public List<Ball> Balls { get; set; }
+        public List<Task> Tasks { get; set; }
 
         public Board(int sizeX, int sizeY) {
             this.sizeX = sizeX;
             this.sizeY = sizeY;
-            Balls = new List<Ball>();
+            Tasks = new List<Task>();
         }
 
         public override void AddBalls(int number, int radius)
         {
-            for(int i = 0; i < number; i++)
+            for(int i =0; i < number; i++)
             {
-                Random random = new Random();
-                int x = random.Next(radius,sizeX-radius);
-                int y = random.Next(radius,sizeY-radius);
-                Ball ball = new Ball(x, y, radius);
-                Balls.Add(ball);
+                Tasks.Add(new Task(() =>
+                {
+                    Random random = new Random();
+                    int x = random.Next(radius, sizeX - radius);
+                    int y = random.Next(radius, sizeY - radius);
+                    Ball ball = new Ball(x, y, radius);
+                    Balls.Add(ball);
+
+                    while (true)
+                    {
+                        ball.RandomizeSpeed(-5,5);
+                        ball.moveBall();
+                        Thread.Sleep(500);
+                    }
+                }));
+                
             }
         }
 
-
-        public override void MoveBalls()
+        public override void StartMovement()
         {
-            foreach(Ball b in Balls)
+            foreach(Task task in Tasks)
             {
-                b.RandomizeSpeed(-5,5);
-                b.moveBall();
+                task.Start();
             }
         }
+
+        public override void ClearBoard()
+        {
+            foreach (Task task in Tasks)
+            {
+                task.Dispose();
+            }
+        }
+
+
 
         public override List<List<int>> GetAllBallsPosition()
         {
@@ -51,11 +73,6 @@ namespace Logic
                 positions.Add(BallPosition);
             }
             return positions;
-        }
-
-        public override void ClearBoard()
-        {
-            Balls.Clear();
         }
     }
 }
