@@ -29,5 +29,24 @@ namespace Logic
             this.PosY += SpeedY;
         }
 
+        public bool CheckCollision(int BoardWidth ,int BoardHeight)
+        {
+            if (this.PosX + this.SpeedX + this.Radius < BoardWidth && this.PosX + this.SpeedX - this.Radius > 0
+                && this.PosY + this.SpeedY + this.Radius < BoardHeight && this.PosY + this.SpeedY - this.Radius > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        internal void RandomizeSpeed(int min, int max)
+        {
+            Random rnd = new Random();
+            this.SpeedY = rnd.Next(min, max);
+            this.SpeedX = rnd.Next(min, max);
+        }
     }
 }
