@@ -8,13 +8,13 @@ namespace Logic
         {
             return new LogicAPI(); //tutaj pewnie bedzie trzeba przekazac jakies parametry
         }
-        public abstract void AddBall(float x, float y, float radius); // dobre pytanie czy powinnismy w ogole ta funkcje robic
+        public abstract void AddBall(int x, int y, int radius); // dobre pytanie czy powinnismy w ogole ta funkcje robic
                                                                       // bo mozna po prostu w CreateBoard przekazywac liczbe kulek do utworzenia
                                                                       // i podawac ich promien, skoro potem i tak nie mozna wiecej kulek dodawac
 
         public abstract void MoveBall();
 
-        public abstract void CreateBoard(int x, int y); //ta funkcja chyba powinna tworzyc boarda i nowy thread
+        public abstract void CreateBoard(int x, int y, int ballAmount); //ta funkcja chyba powinna tworzyc boarda i nowy thread
                                                         // i tam powinna sie w srodku jakas logika dziac, ze np.
                                                         // rusza tymi kulkami ktore sa w boardzie itd.
 
