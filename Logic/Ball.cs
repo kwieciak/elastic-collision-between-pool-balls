@@ -16,20 +16,20 @@ namespace Logic
 
 
 
-        public Ball(int posX, int posY, int radius)   // nie wiem czy potrzebujemy tutaj od razu podawac predkosc
+        internal Ball(int posX, int posY, int radius)   // nie wiem czy potrzebujemy tutaj od razu podawac predkosc
         {                                                   // czy jednak powinniśmy dopiero potem to robic
             this.PosX = posX;
             this.PosY = posY;
             this.Radius = radius;
         }
 
-        public void moveBall()
+        internal void moveBall()
         {
             this.PosX += SpeedX;
             this.PosY += SpeedY;
         }
 
-        public bool CheckCollision(int BoardWidth ,int BoardHeight)
+        internal bool CheckCollision(int BoardWidth ,int BoardHeight)
         {
             if (this.PosX + this.SpeedX + this.Radius < BoardWidth && this.PosX + this.SpeedX - this.Radius > 0
                 && this.PosY + this.SpeedY + this.Radius < BoardHeight && this.PosY + this.SpeedY - this.Radius > 0)
