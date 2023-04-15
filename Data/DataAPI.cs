@@ -6,5 +6,6 @@ namespace Data
 {
     internal class DataAPI : DataAbstractAPI
     {
+
     }
 }
