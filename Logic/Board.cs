@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Logic
 {
-    internal class Board
+    internal class Board : LogicAbstractAPI
     {
         public int sizeX { get; set; }
         public int sizeY { get; set; }
@@ -16,7 +16,7 @@ namespace Logic
             this.Balls = new List<Ball>(); //chyba tak powinno to wygladac, idk
         }
 
-        public void AddBalls(int number, int radius)
+        public override void AddBalls(int number, int radius)
         {
             for(int i = 0; i < number; i++)
             {
@@ -28,6 +28,7 @@ namespace Logic
             }
         }
 
+
         public void MoveBalls()
         {
             foreach(Ball b in Balls)
@@ -37,6 +38,9 @@ namespace Logic
             }
         }
 
-
+        public override void GetAllBallsPosition()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
