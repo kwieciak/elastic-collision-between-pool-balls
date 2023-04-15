@@ -16,7 +16,7 @@ namespace Logic
 
         //... i reaktywne (okresowe wysłanie położenia kul).
 
-        public abstract void MoveBalls();
+        public abstract void StartMovement();
 
         public abstract void ClearBoard();
 
