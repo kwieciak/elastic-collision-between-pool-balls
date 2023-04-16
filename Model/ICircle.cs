@@ -14,9 +14,9 @@ namespace Model
         }
 
 
-        public abstract int _x { get;set; }
-        public abstract int _y { get;set; }
-        public abstract int _radius { get; set; }
+        public abstract int x { get;set; }
+        public abstract int y { get;set; }
+        public abstract int radius { get; set; }
 
         public abstract void UpdateCircle(Object s, PropertyChangedEventArgs e);
         public abstract void RaisePropertyChanged([CallerMemberName] string? propertyName = null);

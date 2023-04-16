@@ -9,10 +9,14 @@ namespace Model
 {
     internal class Circle : ICircle
     {
-        public override int _x { get => _x; set { _x = value; RaisePropertyChanged(); } }
-        public override int _y { get => _y; set { _y = value; } }
+        public override int x { get => _x; set { _x = value; RaisePropertyChanged(); } }
+        public override int y { get => _y; set { _y = value; RaisePropertyChanged(); } }
 
-        public override int _radius { get; set; }
+        public override int radius { get => _radius; set { _radius = value; RaisePropertyChanged(); } }
+
+        private int _x { get; set; }
+        private int _y { get; set; }
+        private int _radius { get; set; }
 
         public Circle(int x, int y, int radius)
         {

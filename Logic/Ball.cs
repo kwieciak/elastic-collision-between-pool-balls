@@ -9,42 +9,52 @@ namespace Logic
 {
     internal class Ball : IBall
     {
-        public override int PosX 
+        public override int PosX
         {
-            get => PosX; 
-            set { RaisePropertyChanged(); }
+            get => _PosX;
+            set { _PosX = value; RaisePropertyChanged(); }
         }
         public override int PosY
         {
-            get => PosY;
-            set { RaisePropertyChanged(); }
+            get => _PosY;
+            set { _PosY = value; RaisePropertyChanged(); }
         }
-        public override int Radius { get; set; }
 
-        public override int SpeedX { get; set; }
-        public override int SpeedY { get; set; }
+        public override int Radius
+        {
+            get => _Radius;
+            set {  _Radius = value; RaisePropertyChanged();}
+        }
 
 
+
+        public int _PosX { get; set; }
+        public int _PosY { get; set; }
+
+        public int _Radius { get; set; }
+
+        public int SpeedX { get; set; }
+        public int SpeedY { get; set; }
 
         internal Ball(int posX, int posY, int radius)   // nie wiem czy potrzebujemy tutaj od razu podawac predkosc
         {                                                   // czy jednak powinniśmy dopiero potem to robic
-            this.PosX = posX;
-            this.PosY = posY;
-            this.Radius = radius;
+            this._PosX = posX;
+            this._PosY = posY;
+            this._Radius = radius;
         }
 
         public override event PropertyChangedEventHandler? PropertyChanged;
 
         internal void moveBall()
         {
-            this.PosX += SpeedX;
-            this.PosY += SpeedY;
+            this._PosX += SpeedX;
+            this._PosY += SpeedY;
         }
 
         internal bool CheckCollision(int BoardWidth ,int BoardHeight)
         {
-            if (this.PosX + this.SpeedX + this.Radius < BoardWidth && this.PosX + this.SpeedX - this.Radius > 0
-                && this.PosY + this.SpeedY + this.Radius < BoardHeight && this.PosY + this.SpeedY - this.Radius > 0)
+            if (this._PosX + this.SpeedX + this._Radius < BoardWidth && this._PosX + this.SpeedX - this._Radius > 0
+                && this._PosY + this.SpeedY + this._Radius < BoardHeight && this._PosY + this.SpeedY - this._Radius > 0)
             {
                 return true;
             }

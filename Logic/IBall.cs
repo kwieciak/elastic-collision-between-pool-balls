@@ -16,8 +16,8 @@ namespace Logic
         public abstract int PosY { get; set; }
         public abstract int Radius { get; set; }
 
-        public abstract int SpeedX { get; set; }
-        public abstract int SpeedY { get; set; }
+        //public abstract int SpeedX { get; set; }
+        //public abstract int SpeedY { get; set; }
 
         public abstract event PropertyChangedEventHandler? PropertyChanged;
 

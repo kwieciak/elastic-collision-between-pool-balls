@@ -36,20 +36,18 @@ namespace LogicTest
         {
             ModelAbstractAPI api = ModelAbstractAPI.CreateAPIInstance();
             api.Start();
-            //ICircle circle1 = api.GetCircles().ElementAt(0);
-            //int x1 = circle1._x;
-            //int y1 = circle1._y;
-            button1_Click();
-            ICircle circle2 = api.GetCircles().ElementAt(0);
-            int x2 = circle2._x;
-            int y2 = circle2._y;
-            Assert.AreNotEqual(0, x2);
-            Assert.AreNotEqual(0, y2);
-            //api.ClearBalls();
-        }
-        private async Task button1_Click()
-        {
-            await Task.Delay(5000);
+
+            ICircle circle1 = api.GetCircles().ElementAt(1);
+            int x1 = circle1.x;
+            int y1 = circle1.y;
+            ICircle circle2 = api.GetCircles().ElementAt(1);
+            int x2 = circle2.x;
+            int y2 = circle2.y;
+            
+            Assert.AreNotEqual(x1, x2);
+            Assert.AreNotEqual(y1, y2);
+            
+            api.ClearBalls();
         }
     }
 }
