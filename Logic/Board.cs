@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -16,12 +17,15 @@ namespace Logic
 
         private bool stopTasks;
 
+        private readonly DataAbstractAPI _dataLayer;
+
         public Board(int sizeX, int sizeY)
         {
             this.sizeX = sizeX;
             this.sizeY = sizeY;
             Tasks = new List<Task>();
             Balls = new List<IBall>();
+            _dataLayer = DataAbstractAPI.CreateAPIInstance();
         }
 
         public override void AddBalls(int number, int radius)
