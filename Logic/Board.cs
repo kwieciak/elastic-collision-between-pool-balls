@@ -14,8 +14,7 @@ namespace Logic
         public List<IBall> Balls { get; set; }
         public List<Task> Tasks { get; set; }
 
-        //public event PropertyChangedEventHandler? PropertyChanged;
-
+        private bool stopTasks;
 
         public Board(int sizeX, int sizeY)
         {
@@ -27,28 +26,60 @@ namespace Logic
 
         public override void AddBalls(int number, int radius)
         {
-            Random rnd = new Random();
-            for(int i = 0; i < number; i++)
+            for (int i = 0; i < number; i++)
             {
-                int x = rnd.Next(-100, 100);
-                int y = rnd.Next(-100, 100);
-                Ball b = new Ball(x, y, radius);
-                Balls.Add(b);
+                Random random = new Random();
+                int x = random.Next(radius, sizeX - radius);
+                int y = random.Next(radius, sizeY - radius);
+                Ball ball = new Ball(x, y, radius);
+                Balls.Add(ball);
+                Tasks.Add(new Task(() =>
+                {
+                    while (!stopTasks)
+                    {
+                        ball.RandomizeSpeed(-5, 5);
+                        ball.moveBall();
+                        Thread.Sleep(100);
+                    }
+                }));
+
             }
         }
 
-        public override void StartMovement()
+        public override void StartMovement()            // Ta funkcja startuje taski, ktore zostaly utworzone w AddBalls(int,int)
         {
-            foreach(Ball b in Balls)
+            stopTasks = false;
+
+            foreach (Task task in Tasks)
             {
-                b.RandomizeSpeed(-5, 5);
-                b.moveBall();
+                task.Start();
             }
         }
 
         public override void ClearBoard()
         {
-            Balls.Clear();           
+            stopTasks = true;
+            bool IsEveryTaskCompleted = false;
+
+            while (!IsEveryTaskCompleted)               // Ta petla upewnia sie, ze wszystkie Taski sa w stanie "Completed"
+            {                                           // Gdy wszystkie beda Completed to skonczy sie ona i funkcja Task.Dispose()                                        
+                IsEveryTaskCompleted = true;            // uwolni wszystkie uzywane przez taski zasoby
+                foreach (Task task in Tasks)
+                {
+                    if (!task.IsCompleted)
+                    {
+                        IsEveryTaskCompleted = false;
+                        break;
+                    }
+                }
+            }
+
+            foreach (Task task in Tasks)
+            {
+                task.Dispose();                         // Uwalnianie zasobow uzywanych przez dany task
+            }
+            Balls.Clear();
+            Tasks.Clear();                              // Dispose chyba nie usuwa obiektu, wiec trzeba wyczyscic liste                                     
         }
 
 

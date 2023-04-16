@@ -5,6 +5,11 @@ using System.Xml.Schema;
 
 namespace LogicTest
 {
+
+    /* TestMethod2 nalezy przeniesc testow dla Modelu
+     * nalezy tez odkomentowac TestMethod1
+     * ale zeby to dzialalo to trzeba dependecies zmienic.
+     */
     [TestClass]
     public class UnitTest1
     {
@@ -36,10 +41,10 @@ namespace LogicTest
         {
             ModelAbstractAPI api = ModelAbstractAPI.CreateAPIInstance();
             api.Start();
-
             ICircle circle1 = api.GetCircles().ElementAt(1);
             int x1 = circle1.x;
             int y1 = circle1.y;
+            Thread.Sleep(1000);
             ICircle circle2 = api.GetCircles().ElementAt(1);
             int x2 = circle2.x;
             int y2 = circle2.y;

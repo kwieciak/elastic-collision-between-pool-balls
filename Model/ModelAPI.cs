@@ -36,7 +36,6 @@ namespace Model
         public override void Start()
         {
             _logicAPI.AddBalls(5, 2);
-            //Thread.Sleep(100);              //ta linijka powoduje jakies giga problemy
             _logicAPI.StartMovement();
         }
 
