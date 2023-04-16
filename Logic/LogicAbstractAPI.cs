@@ -10,7 +10,7 @@ namespace Logic
     {
         public static LogicAbstractAPI CreateAPIInstance()
         {
-            return new Board(1920,1080); //rozmiar jest randomowy, idk jaki powinien byc, raczej mniejszy i to wyjdzie pewnie w ViewModel
+            return new Board(580,420); //rozmiar jest randomowy, idk jaki powinien byc, raczej mniejszy i to wyjdzie pewnie w ViewModel
         }
 
 

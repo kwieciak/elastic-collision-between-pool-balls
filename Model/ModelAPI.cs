@@ -35,7 +35,7 @@ namespace Model
 
         public override void Start()
         {
-            _logicAPI.AddBalls(5, 2);
+            _logicAPI.AddBalls(5, 2); //zmienic na przekayzwanie
             _logicAPI.StartMovement();
         }
 

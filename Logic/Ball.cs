@@ -7,11 +7,13 @@ using System.Text;
 
 namespace Logic
 {
-    internal class Ball : IBall
+    internal class Ball : IBall, INotifyPropertyChanged
     {
         /* Te 3 overridy dobrze ilustruja to co napisalem w IBall.cs
          * Trzeba by sie serio zastanowic czy nie nazwac tego BallAPI (w sensie IBalla)
          */
+
+        public override event PropertyChangedEventHandler? PropertyChanged;             // To wykrywa (I suppose) wszystkie wywolania RaisePropertyChanged()
         public override int PosX
         {
             get => _PosX;
@@ -39,7 +41,6 @@ namespace Logic
         public int _SpeedX { get; set; }
         public int _SpeedY { get; set; }
 
-        public override event PropertyChangedEventHandler? PropertyChanged;             // To wykrywa (I suppose) wszystkie wywolania RaisePropertyChanged()
 
         internal Ball(int posX, int posY, int radius)       
         {                                                   
@@ -49,10 +50,10 @@ namespace Logic
         }
 
 
-        internal void moveBall()
+        public override void moveBall()
         {
-            this._PosX += _SpeedX;
-            this._PosY += _SpeedY;
+            PosX += _SpeedX;
+            PosY += _SpeedY;
         }
 
         internal bool CheckCollision(int BoardWidth ,int BoardHeight)
@@ -68,7 +69,7 @@ namespace Logic
             }
         }
 
-        internal void RandomizeSpeed(int min, int max)
+        public override void RandomizeSpeed(int min, int max)
         {
             Random rnd = new Random();
             this._SpeedY = rnd.Next(min, max);

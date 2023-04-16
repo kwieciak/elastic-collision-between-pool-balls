@@ -24,6 +24,8 @@ namespace Logic
         public abstract int PosX { get; set; }
         public abstract int PosY { get; set; }
         public abstract int Radius { get; set; }
+        public abstract void RandomizeSpeed(int min, int max);
+        public abstract void moveBall();
 
         //public abstract int SpeedX { get; set; }
         //public abstract int SpeedY { get; set; }

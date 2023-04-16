@@ -19,6 +19,8 @@ namespace Model
         public abstract int radius { get; set; }
 
         public abstract void UpdateCircle(Object s, PropertyChangedEventArgs e);
-        public abstract void RaisePropertyChanged([CallerMemberName] string? propertyName = null);
+
+        public abstract event PropertyChangedEventHandler? PropertyChanged;
+        //public abstract void RaisePropertyChanged([CallerMemberName] string? propertyName = null);
     }
 }

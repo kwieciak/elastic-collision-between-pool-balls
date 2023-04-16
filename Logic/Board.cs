@@ -31,7 +31,7 @@ namespace Logic
                 Random random = new Random();
                 int x = random.Next(radius, sizeX - radius);
                 int y = random.Next(radius, sizeY - radius);
-                Ball ball = new Ball(x, y, radius);
+                IBall ball = IBall.CreateBall(x, y, radius);
                 Balls.Add(ball);
                 Tasks.Add(new Task(() =>
                 {

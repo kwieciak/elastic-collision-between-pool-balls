@@ -12,7 +12,7 @@ namespace Model
      * UWAGA na metode UpdateCircle() bo potrafi niezle bagno zrobic
      * 
      */
-    internal class Circle : ICircle
+    internal class Circle : ICircle, INotifyPropertyChanged
     {
         public override int x { get => _x; set { _x = value; RaisePropertyChanged(); } }
         public override int y { get => _y; set { _y = value; RaisePropertyChanged(); } }
@@ -30,7 +30,7 @@ namespace Model
             _radius = radius;
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public override event PropertyChangedEventHandler? PropertyChanged;
 
         /* Jak juz wyzej pisalem, jest to dosyc problematyczna metoda.
          * Chyba to jest wywolywane, gdy jakis ball zmieni swoja PosX badz PosY (tzn. tak na 90% tak, ale no, sa to dla mnie nieco magiczne metody
@@ -48,15 +48,15 @@ namespace Model
             IBall ball = (IBall)s;
             if (e.PropertyName == "PosX")
             {
-                _x = ball.PosX;
+                x = ball.PosX;
             }
             else if (e.PropertyName == "PosY")
             {
-                _y = ball.PosY;
+                y = ball.PosY;
             }
         }
 
-        public override void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
+        private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
