@@ -1,38 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 
 namespace Logic
 {
-    internal class Ball
+    internal class Ball : IBall
     {
-        public int PosX { get; set; }
-        public int PosY { get; set; }
-        public int Radius { get; set; }
-
-        public int SpeedX { get; set; }
-        public int SpeedY { get; set; }
-
-
-
-        internal Ball(int posX, int posY, int radius)   // nie wiem czy potrzebujemy tutaj od razu podawac predkosc
-        {                                                   // czy jednak powinniśmy dopiero potem to robic
-            this.PosX = posX;
-            this.PosY = posY;
-            this.Radius = radius;
+        /* Te 3 overridy dobrze ilustruja to co napisalem w IBall.cs
+         * Trzeba by sie serio zastanowic czy nie nazwac tego BallAPI (w sensie IBalla)
+         */
+        public override int PosX
+        {
+            get => _PosX;
+            set { _PosX = value; RaisePropertyChanged(); }
         }
+        public override int PosY
+        {
+            get => _PosY;
+            set { _PosY = value; RaisePropertyChanged(); }
+        }
+
+        public override int Radius
+        {
+            get => _Radius;
+            set {  _Radius = value; RaisePropertyChanged();}
+        }
+
+
+
+        public int _PosX { get; set; }
+        public int _PosY { get; set; }
+
+        public int _Radius { get; set; }
+
+        public int _SpeedX { get; set; }
+        public int _SpeedY { get; set; }
+
+        public override event PropertyChangedEventHandler? PropertyChanged;             // To wykrywa (I suppose) wszystkie wywolania RaisePropertyChanged()
+
+        internal Ball(int posX, int posY, int radius)       
+        {                                                   
+            this._PosX = posX;
+            this._PosY = posY;
+            this._Radius = radius;
+        }
+
 
         internal void moveBall()
         {
-            this.PosX += SpeedX;
-            this.PosY += SpeedY;
+            this._PosX += _SpeedX;
+            this._PosY += _SpeedY;
         }
 
         internal bool CheckCollision(int BoardWidth ,int BoardHeight)
         {
-            if (this.PosX + this.SpeedX + this.Radius < BoardWidth && this.PosX + this.SpeedX - this.Radius > 0
-                && this.PosY + this.SpeedY + this.Radius < BoardHeight && this.PosY + this.SpeedY - this.Radius > 0)
+            if (this._PosX + this._SpeedX + this._Radius < BoardWidth && this._PosX + this._SpeedX - this._Radius > 0
+                && this._PosY + this._SpeedY + this._Radius < BoardHeight && this._PosY + this._SpeedY - this._Radius > 0)
             {
                 return true;
             }
@@ -45,8 +71,17 @@ namespace Logic
         internal void RandomizeSpeed(int min, int max)
         {
             Random rnd = new Random();
-            this.SpeedY = rnd.Next(min, max);
-            this.SpeedX = rnd.Next(min, max);
+            this._SpeedY = rnd.Next(min, max);
+            this._SpeedX = rnd.Next(min, max);
+        }
+
+        /* To jest powiazane z tym PropertyChangedHandlerem
+         * Tzn. ten handler wychwytuje wywolanie tej funkcji (?)
+         */
+
+        private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)   
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
