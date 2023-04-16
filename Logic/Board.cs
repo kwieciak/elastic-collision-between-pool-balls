@@ -67,26 +67,26 @@ namespace Logic
         {
             stopTasks = true;
             bool IsEveryTaskCompleted = false;
-
-            while (!IsEveryTaskCompleted)               // Ta petla upewnia sie, ze wszystkie Taski sa w stanie "Completed"
-            {                                           // Gdy wszystkie beda Completed to skonczy sie ona i funkcja Task.Dispose()                                        
-                IsEveryTaskCompleted = true;            // uwolni wszystkie uzywane przez taski zasoby
-                foreach (Task task in Tasks)
-                {
-                    if (!task.IsCompleted)
+       
+                while (!IsEveryTaskCompleted)               // Ta petla upewnia sie, ze wszystkie Taski sa w stanie "Completed"
+                {                                           // Gdy wszystkie beda Completed to skonczy sie ona i funkcja Task.Dispose()                                        
+                    IsEveryTaskCompleted = true;            // uwolni wszystkie uzywane przez taski zasoby
+                    foreach (Task task in Tasks)
                     {
-                        IsEveryTaskCompleted = false;
-                        break;
+                        if (!task.IsCompleted)
+                        {
+                            IsEveryTaskCompleted = false;
+                            break;
+                        }
                     }
                 }
-            }
 
-            foreach (Task task in Tasks)
-            {
-                task.Dispose();                         // Uwalnianie zasobow uzywanych przez dany task
-            }
-            Balls.Clear();
-            Tasks.Clear();                              // Dispose chyba nie usuwa obiektu, wiec trzeba wyczyscic liste                                     
+                foreach (Task task in Tasks)
+                {
+                    task.Dispose();                         // Uwalnianie zasobow uzywanych przez dany task
+                }
+                Balls.Clear();
+                Tasks.Clear();                                           // Dispose chyba nie usuwa obiektu, wiec trzeba wyczyscic liste                                     
         }
 
 
