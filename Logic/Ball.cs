@@ -10,7 +10,7 @@ namespace Logic
     internal class Ball : IBall, INotifyPropertyChanged
     {
         /* Te 3 overridy dobrze ilustruja to co napisalem w IBall.cs
-         * Trzeba by sie serio zastanowic czy nie nazwac tego BallAPI (w sensie IBalla)
+         * 
          */
 
         public override event PropertyChangedEventHandler? PropertyChanged;             // To wykrywa (I suppose) wszystkie wywolania RaisePropertyChanged()
@@ -56,7 +56,7 @@ namespace Logic
             PosY += _SpeedY;
         }
 
-        internal bool CheckCollision(int BoardWidth ,int BoardHeight)
+        public override bool CheckCollision(int BoardWidth ,int BoardHeight)
         {
             if (this._PosX + this._SpeedX + this._Radius < BoardWidth && this._PosX + this._SpeedX - this._Radius > 0
                 && this._PosY + this._SpeedY + this._Radius < BoardHeight && this._PosY + this._SpeedY - this._Radius > 0)
@@ -77,7 +77,7 @@ namespace Logic
         }
 
         /* To jest powiazane z tym PropertyChangedHandlerem
-         * Tzn. ten handler wychwytuje wywolanie tej funkcji (?)
+         * Tzn. ten handler wychwytuje wywolanie tej funkcji
          */
 
         private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)   

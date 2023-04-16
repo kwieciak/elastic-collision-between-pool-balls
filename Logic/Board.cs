@@ -42,8 +42,11 @@ namespace Logic
                     while (!stopTasks)
                     {
                         ball.RandomizeSpeed(-5, 5);
-                        ball.moveBall();
-                        Thread.Sleep(100);
+                        if (ball.CheckCollision(sizeX, sizeY))
+                        {
+                            ball.moveBall();
+                            Thread.Sleep(100);
+                        }
                     }
                 }));
 
