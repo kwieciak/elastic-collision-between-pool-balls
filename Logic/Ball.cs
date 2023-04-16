@@ -9,9 +9,7 @@ namespace Logic
 {
     internal class Ball : IBall, INotifyPropertyChanged
     {
-        /* Te 3 overridy dobrze ilustruja to co napisalem w IBall.cs
-         * 
-         */
+
 
         public override event PropertyChangedEventHandler? PropertyChanged;             // To wykrywa (I suppose) wszystkie wywolania RaisePropertyChanged()
         public override int PosX
@@ -75,10 +73,6 @@ namespace Logic
             this._SpeedY = rnd.Next(min, max);
             this._SpeedX = rnd.Next(min, max);
         }
-
-        /* To jest powiazane z tym PropertyChangedHandlerem
-         * Tzn. ten handler wychwytuje wywolanie tej funkcji
-         */
 
         private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)   
         {

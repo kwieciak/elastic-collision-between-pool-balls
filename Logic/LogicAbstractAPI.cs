@@ -3,14 +3,13 @@ using System.Collections.Generic;
 
 namespace Logic
 {
-    /* Powinnismy tutaj jeszcze wstrzyknac jakos DataAbstractAPI */
 
 
     public abstract class LogicAbstractAPI
     {
         public static LogicAbstractAPI CreateAPIInstance()
         {
-            return new Board(580,420); //rozmiar jest randomowy, idk jaki powinien byc, raczej mniejszy i to wyjdzie pewnie w ViewModel
+            return new Board(580,420); 
         }
 
 
@@ -20,7 +19,6 @@ namespace Logic
 
         public abstract void ClearBoard();
 
-        // W sumie to chyba ta metoda jest jednak useless
         public abstract List<List<int>> GetAllBallsPosition();
 
         public abstract List<IBall> GetAllBalls();

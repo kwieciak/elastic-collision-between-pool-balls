@@ -7,11 +7,6 @@ using System.Text;
 
 namespace Model
 {
-    /* Ta klasa to Ball, ale dla Modelu
-     * Jak widzisz tutaj tez jest EventHandler i RaisePropertyChanged() i zrobilem to z mysla o ViewModel, bo zakladam ze on tez czegos takiego bedzie potrzebowal (?)
-     * UWAGA na metode UpdateCircle() bo potrafi niezle bagno zrobic
-     * 
-     */
     internal class Circle : ICircle, INotifyPropertyChanged
     {
         public override int x { get => _x; set { _x = value; RaisePropertyChanged(); } }
@@ -33,7 +28,7 @@ namespace Model
         public override event PropertyChangedEventHandler? PropertyChanged;
 
         /* Jak juz wyzej pisalem, jest to dosyc problematyczna metoda.
-         * Chyba to jest wywolywane, gdy jakis ball zmieni swoja PosX badz PosY (tzn. tak na 90% tak, ale no, sa to dla mnie nieco magiczne metody
+         * Chyba to jest wywolywane, gdy jakis ball zmieni swoja PosX badz PosY (tzn. tak na 90% tak, juz nie pamietam jaki to byl problem)
          * 
          * Keep in mind:
          *      Problem pojawia sie gdy:
