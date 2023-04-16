@@ -11,16 +11,15 @@ namespace Logic
         }
 
 
-        // API warstwy Logika powinno zawierać operacje interaktywne (np. twórz kule)...
         public abstract void AddBalls(int number, int radius);
-
-        //... i reaktywne (okresowe wysłanie położenia kul).
 
         public abstract void StartMovement();
 
         public abstract void ClearBoard();
 
         public abstract List<List<int>> GetAllBallsPosition();
+
+        public abstract List<IBall> GetAllBalls();
 
 
 

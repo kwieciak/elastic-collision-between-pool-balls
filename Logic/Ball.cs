@@ -1,18 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 
 namespace Logic
 {
-    internal class Ball
+    internal class Ball : IBall
     {
-        public int PosX { get; set; }
-        public int PosY { get; set; }
-        public int Radius { get; set; }
+        public override int PosX 
+        {
+            get => PosX; 
+            set { RaisePropertyChanged(); }
+        }
+        public override int PosY
+        {
+            get => PosY;
+            set { RaisePropertyChanged(); }
+        }
+        public override int Radius { get; set; }
 
-        public int SpeedX { get; set; }
-        public int SpeedY { get; set; }
+        public override int SpeedX { get; set; }
+        public override int SpeedY { get; set; }
 
 
 
@@ -22,6 +32,8 @@ namespace Logic
             this.PosY = posY;
             this.Radius = radius;
         }
+
+        public override event PropertyChangedEventHandler? PropertyChanged;
 
         internal void moveBall()
         {
@@ -47,6 +59,11 @@ namespace Logic
             Random rnd = new Random();
             this.SpeedY = rnd.Next(min, max);
             this.SpeedX = rnd.Next(min, max);
+        }
+
+        private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)   //MOZE NAZWA NOTIFY PROPERTY CHANGED
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
