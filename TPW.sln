@@ -7,11 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "View", "View\View.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{A97EF12A-111D-4802-A22A-ACE4CCF2A123}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{AEC66CA2-3352-43FE-AD99-97423760EB48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{AEC66CA2-3352-43FE-AD99-97423760EB48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{3F808E2F-0FBA-4902-9479-60813D950E48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{3F808E2F-0FBA-4902-9479-60813D950E48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\ViewModel.csproj", "{BF971749-247B-47F8-926E-BC6C7425C680}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ViewModel\ViewModel.csproj", "{BF971749-247B-47F8-926E-BC6C7425C680}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTest", "LogicTest\LogicTest.csproj", "{C1885AC2-FEC0-4DD2-9225-E9614C9164E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{BF971749-247B-47F8-926E-BC6C7425C680}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF971749-247B-47F8-926E-BC6C7425C680}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF971749-247B-47F8-926E-BC6C7425C680}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1885AC2-FEC0-4DD2-9225-E9614C9164E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1885AC2-FEC0-4DD2-9225-E9614C9164E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1885AC2-FEC0-4DD2-9225-E9614C9164E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1885AC2-FEC0-4DD2-9225-E9614C9164E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
