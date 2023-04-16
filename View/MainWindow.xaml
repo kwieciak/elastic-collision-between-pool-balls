@@ -9,8 +9,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.DataContext>
-         <vm:MainWindowViewModel />
-        </Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
     <Grid>
         <Label
             Content=" "
@@ -19,14 +19,15 @@
             Margin="10,167,0,0"
             VerticalAlignment="Top" />
         <Button
+            Background="#27a75a"
             Command="{Binding Start}"
             Content="Start"
             FontSize="20"
-            Height="44"
+            Height="32"
             HorizontalAlignment="Left"
-            Margin="30,107,0,0"
+            Margin="18,108,0,0"
             VerticalAlignment="Top"
-            Width="108" />
+            Width="60" />
         <TextBox
             FontSize="20"
             HorizontalAlignment="Left"
@@ -35,30 +36,39 @@
             VerticalAlignment="Top"
             Width="120" />
         <Label
-            Content="Liczba kul&#xD;&#xA;"
+            Content="Wpisz liczbe kul"
             FontSize="20"
             Height="35"
             HorizontalAlignment="Left"
-            Margin="35,21,0,0"
+            Margin="10,21,0,0"
             VerticalAlignment="Top"
-            Width="98" />
+            Width="148" />
         <Button
             Background="#FF0000"
             Command="{Binding Stop}"
             Content="Stop"
             FontSize="20"
-            Height="39"
+            Height="32"
             HorizontalAlignment="Left"
-            Margin="30,165,0,0"
+            Margin="93,108,0,0"
             VerticalAlignment="Top"
-            Width="108" />
+            Width="61" RenderTransformOrigin="-0.157,1.447" >
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.21"/>
+                    <TranslateTransform X="0.083" Y="0.195"/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
         <ItemsControl
             Height="420"
             ItemsSource="{Binding Circles}"
             Margin="190,7,20,7">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas Background="Black" />
+                    <Canvas Background="#397ac4" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>
@@ -69,7 +79,7 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Path Fill="Green">
+                    <Path Fill="#4d0269 ">
                         <Path.Data>
                             <EllipseGeometry
                                 RadiusX="10"
