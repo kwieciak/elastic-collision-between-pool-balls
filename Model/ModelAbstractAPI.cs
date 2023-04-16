@@ -12,7 +12,7 @@ namespace Model
             return new ModelAPI();
         }
 
-        public abstract void Start();
+        public abstract void Start(int BallsAmount, int Radius);
 
         public abstract void ClearBalls();
 

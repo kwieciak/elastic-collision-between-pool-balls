@@ -33,9 +33,9 @@ namespace Model
             _logicAPI.ClearBoard();
         }
 
-        public override void Start()
+        public override void Start(int BallsAmount, int Radius)
         {
-            _logicAPI.AddBalls(5, 2); //zmienic na przekayzwanie
+            _logicAPI.AddBalls(BallsAmount, Radius); //zmienic na przekayzwanie
             _logicAPI.StartMovement();
         }
 

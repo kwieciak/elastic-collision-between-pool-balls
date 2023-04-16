@@ -13,6 +13,18 @@ namespace ViewModel
 
         public RelayCommand Stop { get; }
 
+        private String _BallsAmount = "";
+
+        public String BallsAmount
+        {
+            get => _BallsAmount;
+            set
+            {
+                _BallsAmount = value;
+                RaisePropertyChanged();
+            }
+        }
+
         public MainWindowViewModel()
         {
             _modelAPI = ModelAbstractAPI.CreateAPIInstance();
@@ -23,7 +35,8 @@ namespace ViewModel
 
         public void StartProcess()
         {
-            _modelAPI.Start();
+            int BallsAmountInt = int.Parse(BallsAmount);
+            _modelAPI.Start(BallsAmountInt,10);
             RaisePropertyChanged("Circles");
         }
 
@@ -32,6 +45,8 @@ namespace ViewModel
             _modelAPI.ClearBalls();
             RaisePropertyChanged("Circles");
         }
+
+       
 
     }
 }
