@@ -40,7 +40,7 @@ namespace LogicTest
         public void TestMethod2()
         {
             ModelAbstractAPI api = ModelAbstractAPI.CreateAPIInstance();
-            api.Start();
+            api.Start(10,5);
             ICircle circle1 = api.GetCircles().ElementAt(1);
             int x1 = circle1.x;
             int y1 = circle1.y;

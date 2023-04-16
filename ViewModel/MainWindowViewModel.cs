@@ -15,6 +15,8 @@ namespace ViewModel
 
         private String _BallsAmount = "";
 
+        private int _ballRadius = 10;
+
         public String BallsAmount
         {
             get => _BallsAmount;
@@ -36,7 +38,7 @@ namespace ViewModel
         public void StartProcess()
         {
             int BallsAmountInt = int.Parse(BallsAmount);
-            _modelAPI.Start(BallsAmountInt,10);
+            _modelAPI.Start(BallsAmountInt,_ballRadius);
             RaisePropertyChanged("Circles");
         }
 

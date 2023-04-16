@@ -83,8 +83,8 @@
                     <Path Fill="#4d0269 ">
                         <Path.Data>
                             <EllipseGeometry
-                                RadiusX="10"
-                                RadiusY="10" />
+                                RadiusX="{Binding radius}"
+                                RadiusY="{Binding radius}"/>
                         </Path.Data>
                     </Path>
                 </DataTemplate>
