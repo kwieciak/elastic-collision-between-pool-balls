@@ -8,6 +8,10 @@ namespace ViewModel
     {
         private ModelAbstractAPI _modelAPI;
 
+        /* Z tej kolekcji View bierze informacje o tym, ze nastapila zmiana w Circlach
+         * Nie wiem dokladnie jak to od kuchni dziala, ale po prostu View zaktualizuje to co wyswietla
+         * Gdy cos w tej kolekcji zrobi RaisePropertyChanged()
+         */
         public ObservableCollection<ICircle> Circles => _modelAPI.GetCircles();
         public RelayCommand Start { get; }
 

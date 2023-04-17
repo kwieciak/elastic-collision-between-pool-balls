@@ -37,6 +37,12 @@ namespace Logic
                 int y = random.Next(radius, sizeY - radius);
                 IBall ball = IBall.CreateBall(x, y, radius);
                 Balls.Add(ball);
+
+                /* 
+                 * Teraz tego taska tylko "przygotowujemy".
+                 * Wywolywany on bedzie dopiero, gdy zostanie na nim wywolana metoda Start()
+                 */
+
                 Tasks.Add(new Task(() =>
                 {
                     while (!stopTasks)
@@ -86,7 +92,7 @@ namespace Logic
                     task.Dispose();                         // Uwalnianie zasobow uzywanych przez dany task
                 }
                 Balls.Clear();
-                Tasks.Clear();                                           // Dispose chyba nie usuwa obiektu, wiec trzeba wyczyscic liste                                     
+                Tasks.Clear();                              // Dispose chyba nie usuwa obiektu, wiec trzeba wyczyscic liste                                     
         }
 
 

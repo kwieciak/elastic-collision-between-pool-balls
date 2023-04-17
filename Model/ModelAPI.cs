@@ -21,8 +21,8 @@ namespace Model
             foreach(IBall ball in _logicAPI.GetAllBalls())
             {
                 ICircle c = ICircle.CreateCircle(ball.PosX, ball.PosY, ball.Radius);
-                Circles.Add(c);
-                ball.PropertyChanged += c.UpdateCircle!;
+                Circles.Add(c);                                  //Ponizej dodajemy metode, ktora bedzie wywolywana za kazdym razem, gdy ball zglosi PropertyChanged
+                ball.PropertyChanged += c.UpdateCircle!;         //wykrzyknik nie jest konieczny, to tylko mowi kompilatorowi ze metoda UpdateCircle nie bedzie NULLem
             }
             return Circles;
         }

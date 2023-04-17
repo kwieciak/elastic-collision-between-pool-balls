@@ -7,6 +7,14 @@ using System.Text;
 
 namespace Logic
 {
+    /* Ball implementuje interfejs INotifyPropertyChanged
+     * tworzac event PropertyChanged
+     * 
+     * Metoda RaisePropertyChanged() informuje warstwe wyzsza, ze zmienil sie ktorys z atrybutow,
+     * tzn. zostal uzyty setter dla tego atrybutu.
+     * 
+     * W ModelAPI (linijka 25) okresla co sie stanie, gdy nastapi jakas zmiana atrybutu (tzn. jaka funkcja zostanie wywolana).
+     */
     internal class Ball : IBall, INotifyPropertyChanged
     {
 

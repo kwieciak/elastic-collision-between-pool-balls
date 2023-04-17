@@ -7,6 +7,13 @@ using System.Text;
 
 namespace Model
 {
+    /* 
+     * Circle podobnie jak Ball musi informowac warstwe wyzsza o zmianie jego atrybutow
+     * Dziala to dokladnie tak samo jak wlasnie w Ballu, wiec patrz tam.
+     * Roznica jest tylko taka, ze ViewModel korzysta z ObservableCollection<Circle>,
+     * ktora jakby nasluchuje zmian (czyli RaisePropertyChanged()) dla calej Kolekcji.
+     * I potem View nasluchuje zmian w tej kolekcji.
+     */
     internal class Circle : ICircle, INotifyPropertyChanged
     {
         public override int x { get => _x; set { _x = value; RaisePropertyChanged(); } }
@@ -28,7 +35,8 @@ namespace Model
         public override event PropertyChangedEventHandler? PropertyChanged;
 
         /* Jak juz wyzej pisalem, jest to dosyc problematyczna metoda.
-         * Chyba to jest wywolywane, gdy jakis ball zmieni swoja PosX badz PosY (tzn. tak na 90% tak, juz nie pamietam jaki to byl problem)
+         * Jest to wywolywane gdy Ball sie zmieni (czyli w gruncie rzeczy zmieni sie jego X badz Y)
+         * 
          * 
          * Keep in mind:
          *      Problem pojawia sie gdy:
