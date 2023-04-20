@@ -16,8 +16,8 @@ namespace Logic
         public List<Task> Tasks { get; set; }
 
         private bool stopTasks;
-
         private readonly DataAbstractAPI _dataLayer;
+
 
         public Board(int sizeX, int sizeY)
         {
@@ -37,7 +37,6 @@ namespace Logic
                 int y = random.Next(radius, sizeY - radius);
                 IBall ball = IBall.CreateBall(x, y, radius);
                 Balls.Add(ball);
-
                 /* 
                  * Teraz tego taska tylko "przygotowujemy".
                  * Wywolywany on bedzie dopiero, gdy zostanie na nim wywolana metoda Start()
@@ -45,19 +44,46 @@ namespace Logic
 
                 Tasks.Add(new Task(() =>
                 {
+                    ball.RandomizeSpeed(-5, 5);
                     while (!stopTasks)
-                    {
-                        ball.RandomizeSpeed(-5, 5);
-                        if (ball.CheckCollision(sizeX, sizeY))
+                    {                       
+                        ball.CheckCollision(sizeX, sizeY);
+                        ball.moveBall();
+                        Task.Delay(5).Wait();
+
+                        lock (Balls)
                         {
-                            ball.moveBall();
-                            Thread.Sleep(100);
+                            CheckBallsCollision(ball);
                         }
+
                     }
                 }));
 
             }
         }
+        private void CheckBallsCollision(IBall me)
+        {
+            foreach(IBall ball in Balls)
+            {
+                if (ball != me)
+                {
+                    if(Math.Abs(ball.PosX - me.PosX) < me.Radius + ball.Radius && Math.Abs(ball.PosY - me.PosY) < me.Radius + ball.Radius)
+                    {
+                        lock (ball) lock (me)
+                        {
+
+                            ball.CollideWithBall(me);
+                            me.CollideWithBall(ball);
+                            ball.ApplyTempSpeed();
+                            me.ApplyTempSpeed();
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+
+
 
         public override void StartMovement()            // Ta funkcja startuje taski, ktore zostaly utworzone w AddBalls(int,int)
         {
