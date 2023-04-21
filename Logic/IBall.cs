@@ -19,6 +19,7 @@ namespace Logic
 
         public abstract int SpeedX { get; set; }
         public abstract int SpeedY { get; set; }
+        public abstract bool IsBouncedBack { get; set; }
         public abstract void RandomizeSpeed(int min, int max);
         public abstract void moveBall();
 

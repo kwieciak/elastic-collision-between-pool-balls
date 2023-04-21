@@ -58,13 +58,14 @@ namespace Logic
 
         public int _TempSpeedX { get; set; }
         public int _TempSpeedY { get; set; }
-
+        public override bool IsBouncedBack { get;set; }
 
         internal Ball(int posX, int posY, int radius)       
         {                                                   
             this._PosX = posX;
             this._PosY = posY;
             this._Radius = radius;
+            IsBouncedBack = false;
         }
 
 
@@ -135,7 +136,11 @@ namespace Logic
             double addToSpeedY = ourSpeed * Math.Sin(ourMovementAngle - contactAngle) * Math.Sin(contactAngle + Math.PI / 2f);
 
             _TempSpeedX = (int)(SpeedXNumerator / SpeedXDenominator + addToSpeedX); 
-            _TempSpeedY = (int)(SpeedYNumerator / SpeedYDenominator + addToSpeedY); 
+            _TempSpeedY = (int)(SpeedYNumerator / SpeedYDenominator + addToSpeedY);
+            if (_TempSpeedY == 0)
+            {
+                _TempSpeedY = 1;
+            }
             // numerator_SPEEDY = numerator_SPEEDX/cos(contactAngle)*sin(contactAngle) // to put it simply, the numerator is the same, except it's multiplied by sin instead of cos
             // denominator_SPEEDY = denomiator_SPEEDX;
             // addToSpeedY = ourSpeed*sin(ourMovementAngle - contactAngle)*sin(contactAngle + PI/2)

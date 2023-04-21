@@ -16,8 +16,9 @@ namespace Logic
         public List<Task> Tasks { get; set; }
 
         private bool stopTasks;
+        internal object Locker = new object();
         private readonly DataAbstractAPI _dataLayer;
-
+        
 
         public Board(int sizeX, int sizeY)
         {
@@ -44,18 +45,20 @@ namespace Logic
 
                 Tasks.Add(new Task(() =>
                 {
+                    
                     ball.RandomizeSpeed(-5, 5);
                     while (!stopTasks)
-                    {                       
-                        ball.CheckCollision(sizeX, sizeY);
+                    {
                         ball.moveBall();
-                        Task.Delay(5).Wait();
-
-                        lock (Balls)
+                        Monitor.Enter(Balls);
+                        try
                         {
+                            ball.CheckCollision(sizeX, sizeY);
                             CheckBallsCollision(ball);
                         }
+                        finally { Monitor.Exit(Balls); }
 
+                        Task.Delay(10).Wait();
                     }
                 }));
 
@@ -65,18 +68,23 @@ namespace Logic
         {
             foreach(IBall ball in Balls)
             {
-                if (ball != me)
+                if (!ball.Equals(me))
                 {
+                    //zmienic na odleglosc euklidesowa bo to po kwadracie dziala teraz
                     if(Math.Abs(ball.PosX - me.PosX) < me.Radius + ball.Radius && Math.Abs(ball.PosY - me.PosY) < me.Radius + ball.Radius)
                     {
-                        lock (ball) lock (me)
+                        Monitor.Enter(ball);
+                        Monitor.Enter(me);
+                        try
                         {
-
                             ball.CollideWithBall(me);
                             me.CollideWithBall(ball);
                             ball.ApplyTempSpeed();
                             me.ApplyTempSpeed();
+                            ball.moveBall();
+                            me.moveBall();
                         }
+                        finally { Monitor.Exit(ball); Monitor.Exit(me); }
                     }
                     return;
                 }
