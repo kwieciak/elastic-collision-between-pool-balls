@@ -9,7 +9,7 @@ namespace Logic
     {
         public static LogicAbstractAPI CreateAPIInstance()
         {
-            return new Board(580,400); 
+            return new Board(400,580); 
         }
 
 

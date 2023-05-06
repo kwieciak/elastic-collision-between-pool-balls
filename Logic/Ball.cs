@@ -82,17 +82,6 @@ namespace Logic
             {
                 SpeedY *= -1;
             }
-
-            /*
-            if (this._PosX + this._SpeedX + this._Radius < BoardWidth && this._PosX + this._SpeedX - this._Radius > 0
-                && this._PosY + this._SpeedY + this._Radius < BoardHeight && this._PosY + this._SpeedY - this._Radius > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }*/
         }
 
 

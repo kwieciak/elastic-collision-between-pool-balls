@@ -17,8 +17,6 @@ namespace Logic
         public List<IBall> Balls { get; set; }
         public List<Task> Tasks { get; set; }
 
-        private bool stopTasks;
-        internal object Locker = new object();
 
         public IDataBoard dataAPI;
         
@@ -47,11 +45,29 @@ namespace Logic
                 IDataBall dataBall = dataAPI.AddDataBall(x, y, _BallRadius, weight, SpeedX, SpeedY);
                 Ball ball = new Ball(dataBall.PosX, dataBall.PosY,radius);
                 dataBall.PropertyChanged += ball.UpdateBall;
+                dataBall.PropertyChanged += CheckCollisionWithWall;
+                //dataBall.PropertyChanged += CheckCollisionWithWall;
                 Balls.Add(ball);
             }
         }
-        private void CheckBallsCollision(IBall me)
+        private void CheckCollisionWithWall(Object s, PropertyChangedEventArgs e)
         {
+            IDataBall ball = (IDataBall)s;
+
+            if (ball.PosX + ball.XSpeed+ ball.Radius > dataAPI.Width || ball.PosX + ball.XSpeed - ball.Radius < 0)
+            {
+                ball.XSpeed *= -1;
+            }
+            if (ball.PosY + ball.YSpeed + ball.Radius > dataAPI.Height || ball.PosY + ball.YSpeed - ball.Radius < 0)
+            {
+                ball.YSpeed *= -1;
+            }
+        }
+
+        /*
+        private void CheckBallsCollision(Object s, PropertyChangedEventArgs e)
+        {
+            IDataBall me = (IDataBall)s;
             foreach(IBall ball in Balls)
             {
                 if (!ball.Equals(me))
@@ -76,13 +92,12 @@ namespace Logic
                 }
             }
         }
-
+        */
 
 
 
         public override void ClearBoard()
         {
-            stopTasks = true;
             bool IsEveryTaskCompleted = false;
        
                 while (!IsEveryTaskCompleted)               // Ta petla upewnia sie, ze wszystkie Taski sa w stanie "Completed"
