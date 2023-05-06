@@ -80,26 +80,24 @@ namespace Logic
         {
             IDataBall me = (IDataBall)s;
             List<IDataBall> DataBalls = dataAPI.GetAllBalls();
-                foreach (IDataBall ball in DataBalls)
+            foreach (IDataBall ball in DataBalls)
+            {
+                if (!ball.Equals(me))
                 {
-                    if (!ball.Equals(me))
+                    if (Math.Sqrt(Math.Pow(ball.PosX - me.PosX , 2) + Math.Pow(ball.PosY - me.PosY, 2)) < me.Radius + ball.Radius) //zmienione na euklidesowa (ale nie sprawdzalem czy dobrze dziala)
                     {
-                        if (Math.Sqrt(Math.Pow(ball.PosX - me.PosX , 2) + Math.Pow(ball.PosY - me.PosY, 2)) < me.Radius + ball.Radius) //zmienione na euklidesowa (ale nie sprawdzalem czy dobrze dziala)
+                        lock (_locker)
                         {
-                            lock (_locker)
-                            {
-                                CollideWithBall(me, ball);
-                                CollideWithBall(ball, me);
-                                ApplyTempSpeed(ball);
-                                ApplyTempSpeed(me);
-                                me.Move();
-                                ball.Move();
-                            }
+                            CollideWithBall(me, ball);
+                            CollideWithBall(ball, me);
+                            ApplyTempSpeed(ball);
+                            ApplyTempSpeed(me);
+                            me.Move();
+                            ball.Move();
                         }
                     }
                 }
-            
-            
+            }
         }
         public void ApplyTempSpeed(IDataBall ball)
         {
