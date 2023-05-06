@@ -13,12 +13,12 @@ namespace Logic
             return new Ball(xPosition, yPosition, radius);
         }
 
-        public abstract int PosX { get; set; }
-        public abstract int PosY { get; set; }
+        public abstract double PosX { get; set; }
+        public abstract double PosY { get; set; }
         public abstract int Radius { get; set; }
 
-        public abstract int SpeedX { get; set; }
-        public abstract int SpeedY { get; set; }
+        public abstract double SpeedX { get; set; }
+        public abstract double SpeedY { get; set; }
         public abstract bool IsBouncedBack { get; set; }
         public abstract void moveBall();
 

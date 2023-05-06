@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Threading;
 
 namespace Data
 {
@@ -16,6 +17,7 @@ namespace Data
             Width = width; 
             Height = height;
         }
+
 
         public override List<IDataBall> GetAllBalls()
         {

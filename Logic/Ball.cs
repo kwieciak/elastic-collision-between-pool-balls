@@ -18,19 +18,19 @@ namespace Logic
      */
     internal class Ball : IBall, INotifyPropertyChanged
     {
-        private int _PosX;
-        private int _PosY;
+        private double _PosX;
+        private double _PosY;
         private int _Radius;
-        private int _SpeedX;
-        private int _SpeedY;
+        private double _SpeedX;
+        private double _SpeedY;
 
         public override event PropertyChangedEventHandler? PropertyChanged;             // To wykrywa (I suppose) wszystkie wywolania RaisePropertyChanged()
-        public override int PosX
+        public override double PosX
         {
             get => _PosX;
             set { _PosX = value; RaisePropertyChanged(); }
         }
-        public override int PosY
+        public override double PosY
         {
             get => _PosY;
             set { _PosY = value; RaisePropertyChanged(); }
@@ -41,12 +41,12 @@ namespace Logic
             get => _Radius;
             set {  _Radius = value; RaisePropertyChanged();}
         }
-        public override int SpeedX
+        public override double SpeedX
         {
             get => _SpeedX;
             set { _SpeedX = value;  }
         }
-        public override int SpeedY
+        public override double SpeedY
         {
             get => _SpeedY;
             set { _SpeedY = value; }
@@ -57,7 +57,7 @@ namespace Logic
         public int _TempSpeedY { get; set; }
         public override bool IsBouncedBack { get;set; }
 
-        internal Ball(int posX, int posY, int radius)       
+        internal Ball(double posX, double posY, int radius)       
         {                                                   
             this.PosX = posX;
             this.PosY = posY;

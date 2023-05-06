@@ -7,12 +7,16 @@ namespace Data
 {
     public abstract class IDataBall
     {
-        public abstract int PosX { get; set; }
-        public abstract int PosY { get; set; }
+        public abstract double PosX { get; set; }
+        public abstract double PosY { get; set; }
         public abstract int Weight { get; set; }
-        public abstract int XSpeed { get; set; }
-        public abstract int YSpeed { get; set; }
+        public abstract double XSpeed { get; set; }
+        public abstract double TempXSpeed { get; set; }
+        public abstract double TempYSpeed { get; set; }
+        public abstract double YSpeed { get; set; }
         public abstract int Radius { get; set; }
+
+        public abstract void Move();
 
         public abstract event PropertyChangedEventHandler? PropertyChanged;
 

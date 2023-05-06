@@ -9,25 +9,27 @@ namespace Data
 {
     internal class DataBall:IDataBall
     {
-        private int _PosX;
-        private int _PosY;
+        private double _PosX;
+        private double _PosY;
 
         public override event PropertyChangedEventHandler? PropertyChanged;
 
-        public override int PosX
+        public override double PosX
         {
             get => _PosX;
             set { _PosX = value; RaisePropertyChanged(); }
         }
-        public override int PosY
+        public override double PosY
         {
             get => _PosY;
             set { _PosY = value; RaisePropertyChanged(); }
         }
         public override int Weight { get; set; }
-        public override int XSpeed { get; set; }
-        public override int YSpeed { get; set;}
+        public override double XSpeed { get; set; }
+        public override double YSpeed { get; set;}
         public override int Radius { get; set;}
+        public override double TempXSpeed { get; set; }
+        public override double TempYSpeed { get; set; }
 
         public DataBall(int posX, int posY, int weight, int radius, int xSpeed, int ySpeed)
         {
@@ -37,8 +39,7 @@ namespace Data
             XSpeed = xSpeed;
             YSpeed = ySpeed;
             Radius = radius;
-            Task ballTask = Task.Run(StartMovement);
-            //ballTask.Start();
+            Task.Run(StartMovement);
         }
 
         public void StartMovement()
@@ -50,7 +51,7 @@ namespace Data
             }
         }
 
-        public void Move()
+        public override void Move()
         {
             PosX += XSpeed;
             PosY += YSpeed;
