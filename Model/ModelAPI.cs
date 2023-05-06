@@ -36,7 +36,6 @@ namespace Model
         public override void Start(int BallsAmount, int Radius)
         {
             _logicAPI.AddBalls(BallsAmount, Radius); 
-            _logicAPI.StartMovement();
         }
 
 

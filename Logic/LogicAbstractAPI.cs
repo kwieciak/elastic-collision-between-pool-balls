@@ -15,11 +15,7 @@ namespace Logic
 
         public abstract void AddBalls(int number, int radius);
 
-        public abstract void StartMovement();
-
         public abstract void ClearBoard();
-
-        public abstract List<List<int>> GetAllBallsPosition();
 
         public abstract List<IBall> GetAllBalls();
 

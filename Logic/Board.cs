@@ -12,12 +12,15 @@ namespace Logic
     {
         public int sizeX { get; set; }
         public int sizeY { get; set; }
+
+        private int _BallRadius { get; set; }
         public List<IBall> Balls { get; set; }
         public List<Task> Tasks { get; set; }
 
         private bool stopTasks;
         internal object Locker = new object();
-        private readonly DataAbstractAPI _dataLayer;
+
+        public IDataBoard dataAPI;
         
 
         public Board(int sizeX, int sizeY)
@@ -26,42 +29,25 @@ namespace Logic
             this.sizeY = sizeY;
             Tasks = new List<Task>();
             Balls = new List<IBall>();
-            _dataLayer = DataAbstractAPI.CreateAPIInstance();
+            dataAPI = IDataBoard.CreateApi(sizeY, sizeX);
         }
 
         public override void AddBalls(int number, int radius)
         {
-            for (int i = 0; i < number; i++)
+            _BallRadius = radius;
+            
+            for(int i = 0; i<number; i++)
             {
                 Random random = new Random();
                 int x = random.Next(radius, sizeX - radius);
                 int y = random.Next(radius, sizeY - radius);
-                IBall ball = IBall.CreateBall(x, y, radius);
+                int weight = random.Next(1, 5);
+                int SpeedX = random.Next(-5, 5);
+                int SpeedY = random.Next(-5, 5);
+                IDataBall dataBall = dataAPI.AddDataBall(x, y, _BallRadius, weight, SpeedX, SpeedY);
+                Ball ball = new Ball(dataBall.PosX, dataBall.PosY,radius);
+                dataBall.PropertyChanged += ball.UpdateBall;
                 Balls.Add(ball);
-                /* 
-                 * Teraz tego taska tylko "przygotowujemy".
-                 * Wywolywany on bedzie dopiero, gdy zostanie na nim wywolana metoda Start()
-                 */
-
-                Tasks.Add(new Task(() =>
-                {
-                    
-                    ball.RandomizeSpeed(-5, 5);
-                    while (!stopTasks)
-                    {
-                        ball.moveBall();
-                        Monitor.Enter(Balls);
-                        try
-                        {
-                            ball.CheckCollision(sizeX, sizeY);
-                            CheckBallsCollision(ball);
-                        }
-                        finally { Monitor.Exit(Balls); }
-
-                        Task.Delay(10).Wait();
-                    }
-                }));
-
             }
         }
         private void CheckBallsCollision(IBall me)
@@ -93,15 +79,6 @@ namespace Logic
 
 
 
-        public override void StartMovement()            // Ta funkcja startuje taski, ktore zostaly utworzone w AddBalls(int,int)
-        {
-            stopTasks = false;
-
-            foreach (Task task in Tasks)
-            {
-                task.Start();
-            }
-        }
 
         public override void ClearBoard()
         {
@@ -130,21 +107,6 @@ namespace Logic
         }
 
 
-
-        public override List<List<int>> GetAllBallsPosition()
-        {
-            List<List<int>> positions = new List<List<int>>();
-            foreach (Ball b in Balls)
-            {
-                List<int> BallPosition = new List<int>
-                {
-                    b._PosX,
-                    b._PosY
-                };
-                positions.Add(BallPosition);
-            }
-            return positions;
-        }
 
         public override List<IBall> GetAllBalls()
         {

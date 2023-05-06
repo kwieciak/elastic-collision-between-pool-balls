@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -17,7 +18,11 @@ namespace Logic
      */
     internal class Ball : IBall, INotifyPropertyChanged
     {
-
+        private int _PosX;
+        private int _PosY;
+        private int _Radius;
+        private int _SpeedX;
+        private int _SpeedY;
 
         public override event PropertyChangedEventHandler? PropertyChanged;             // To wykrywa (I suppose) wszystkie wywolania RaisePropertyChanged()
         public override int PosX
@@ -48,42 +53,34 @@ namespace Logic
         }
 
 
-        public int _PosX { get; set; }
-        public int _PosY { get; set; }
-
-        public int _Radius { get; set; }
-
-        public int _SpeedX { get; set; }
-        public int _SpeedY { get; set; }
-
         public int _TempSpeedX { get; set; }
         public int _TempSpeedY { get; set; }
         public override bool IsBouncedBack { get;set; }
 
         internal Ball(int posX, int posY, int radius)       
         {                                                   
-            this._PosX = posX;
-            this._PosY = posY;
-            this._Radius = radius;
+            this.PosX = posX;
+            this.PosY = posY;
+            this.Radius = radius;
             IsBouncedBack = false;
         }
 
 
         public override void moveBall()
         {
-            PosX += _SpeedX;
-            PosY += _SpeedY;
+            PosX += SpeedX;
+            PosY += SpeedY;
         }
 
         public override void CheckCollision(int BoardWidth ,int BoardHeight)
         {
-            if(this._PosX + this._SpeedX + this._Radius > BoardWidth || this._PosX + this._SpeedX - this._Radius < 0)
+            if(this.PosX + this.SpeedX + this.Radius > BoardWidth || this.PosX + this.SpeedX - this.Radius < 0)
             {
-                _SpeedX *= -1;
+                SpeedX *= -1;
             }
-            if(this._PosY + this._SpeedY + this._Radius > BoardHeight || this._PosY + this._SpeedY - this._Radius < 0)
+            if(this.PosY + this.SpeedY + this.Radius > BoardHeight || this.PosY + this.SpeedY - this.Radius < 0)
             {
-                _SpeedY *= -1;
+                SpeedY *= -1;
             }
 
             /*
@@ -98,12 +95,6 @@ namespace Logic
             }*/
         }
 
-        public override void RandomizeSpeed(int min, int max)
-        {
-            Random rnd = new Random();
-            this._SpeedY = rnd.Next(min, max);
-            this._SpeedX = rnd.Next(min, max);
-        }
 
         /* Ta funkcja prawdopodobnie bedzie w Boardzie (jakkolwiek bedzie sie ten Board nazywal po refaktoringu, ale no, w Logice bedzie)
          * Bedzie trzeba przekazywac dwie kulki (zamist jednej) i ustawiać im setterami obliczone predkosci
@@ -114,14 +105,14 @@ namespace Logic
             double ourMass = 1;
             double otherMass = 1;
 
-            double ourSpeed = Math.Sqrt(this._SpeedX * this._SpeedX + this._SpeedY * this._SpeedY);
+            double ourSpeed = Math.Sqrt(this.SpeedX * this.SpeedX + this.SpeedY * this.SpeedY);
             double otherSpeed = Math.Sqrt(collider.SpeedX * collider.SpeedX + collider.SpeedY * collider.SpeedY);
 
             // Mozliwe ze zle uzywam arcus tangens, juz nie pamietam za bardzo trygonometrii XD
-            double contactAngle = Math.Atan(Math.Abs(this._PosY - collider.PosY / this._PosX - collider.PosX));
+            double contactAngle = Math.Atan(Math.Abs(this.PosY - collider.PosY / this.PosX - collider.PosX));
             
             // same as before
-            double ourMovementAngle = Math.Atan(this._SpeedY / this._SpeedX);
+            double ourMovementAngle = Math.Atan(this.SpeedY / this.SpeedX);
             double otherMovementAngle = Math.Atan(collider.SpeedY / collider.SpeedX);
 
 
@@ -148,13 +139,20 @@ namespace Logic
         }
         public override void ApplyTempSpeed()
         {
-            _SpeedX = _TempSpeedX;
-            _SpeedY = _TempSpeedY;
+            SpeedX = _TempSpeedX;
+            SpeedY = _TempSpeedY;
         }
 
         private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)   
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void UpdateBall(Object s, PropertyChangedEventArgs e)
+        {
+            IDataBall ball = (IDataBall)s;
+            PosX = ball.PosX;
+            PosY = ball.PosY;
         }
     }
 }
