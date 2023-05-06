@@ -19,9 +19,9 @@ namespace Logic
 
         private Object _locker = new Object();
         private Barrier _barrier;
+        private Barrier _barrier2;
         public IDataBoard dataAPI;
 
-        private Semaphore semaphore = new Semaphore(1, 1);
 
 
         public Board(int sizeX, int sizeY)
@@ -37,7 +37,8 @@ namespace Logic
         {
             _BallRadius = radius;
             _barrier = new Barrier(number);
-            for(int i = 0; i<number; i++)
+            _barrier2 = new Barrier(number);
+            for (int i = 0; i < number; i++)
             {
                 Random random = new Random();
                 int x = random.Next(radius, sizeX - radius);
@@ -46,7 +47,7 @@ namespace Logic
                 int SpeedX;
                 do
                 {
-                    SpeedX = random.Next(-5, 6);
+                    SpeedX = random.Next(-5, 5);
                 } while (SpeedX == 0);
                 int SpeedY;
                 do
@@ -54,7 +55,7 @@ namespace Logic
                     SpeedY = random.Next(-5, 5);
                 } while (SpeedY == 0);
                 IDataBall dataBall = dataAPI.AddDataBall(x, y, _BallRadius, weight, SpeedX, SpeedY);
-                Ball ball = new Ball(dataBall.PosX, dataBall.PosY,radius);
+                Ball ball = new Ball(dataBall.PosX, dataBall.PosY, radius);
                 dataBall.PropertyChanged += ball.UpdateBall;
                 dataBall.PropertyChanged += CheckCollisionWithWall;
                 dataBall.PropertyChanged += CheckBallsCollision;
@@ -65,7 +66,7 @@ namespace Logic
         {
             IDataBall ball = (IDataBall)s;
 
-            if (ball.PosX + ball.XSpeed+ ball.Radius > dataAPI.Width || ball.PosX + ball.XSpeed - ball.Radius < 0)
+            if (ball.PosX + ball.XSpeed + ball.Radius > dataAPI.Width || ball.PosX + ball.XSpeed - ball.Radius < 0)
             {
                 ball.XSpeed *= -1;
             }
@@ -79,22 +80,26 @@ namespace Logic
         {
             IDataBall me = (IDataBall)s;
             List<IDataBall> DataBalls = dataAPI.GetAllBalls();
-            foreach(IDataBall ball in DataBalls)
-            {
-                if (!ball.Equals(me))
+                foreach (IDataBall ball in DataBalls)
                 {
-                    if(Math.Sqrt(Math.Pow(ball.PosX - me.PosX, 2) + Math.Pow(ball.PosY - me.PosY, 2)) < me.Radius + ball.Radius) //zmienione na euklidesowa (ale nie sprawdzalem czy dobrze dziala)
+                    if (!ball.Equals(me))
                     {
-                        CollideWithBall(me, ball);
-                        CollideWithBall(ball, me);
-                        ApplyTempSpeed(ball);
-                        ApplyTempSpeed(me);
-                        //me.Move();
-                        //ball.Move();
+                        if (Math.Sqrt(Math.Pow(ball.PosX - me.PosX , 2) + Math.Pow(ball.PosY - me.PosY, 2)) < me.Radius + ball.Radius) //zmienione na euklidesowa (ale nie sprawdzalem czy dobrze dziala)
+                        {
+                            lock (_locker)
+                            {
+                                CollideWithBall(me, ball);
+                                CollideWithBall(ball, me);
+                                ApplyTempSpeed(ball);
+                                ApplyTempSpeed(me);
+                                me.Move();
+                                ball.Move();
+                            }
+                        }
                     }
                 }
-            }
-
+            
+            
         }
         public void ApplyTempSpeed(IDataBall ball)
         {
@@ -129,8 +134,8 @@ namespace Logic
             double SpeedYDenominator = SpeedXDenominator;
             double addToSpeedY = ourSpeed * Math.Sin(ourMovementAngle - contactAngle) * Math.Sin(contactAngle + Math.PI / 2f);
 
-            me.TempXSpeed = (int)(SpeedXNumerator / SpeedXDenominator + addToSpeedX);
-            me.TempYSpeed = (int)(SpeedYNumerator / SpeedYDenominator + addToSpeedY);
+            me.TempXSpeed = (SpeedXNumerator / SpeedXDenominator + addToSpeedX);
+            me.TempYSpeed = (SpeedYNumerator / SpeedYDenominator + addToSpeedY);
             // numerator_SPEEDY = numerator_SPEEDX/cos(contactAngle)*sin(contactAngle) // to put it simply, the numerator is the same, except it's multiplied by sin instead of cos
             // denominator_SPEEDY = denomiator_SPEEDX;
             // addToSpeedY = ourSpeed*sin(ourMovementAngle - contactAngle)*sin(contactAngle + PI/2)
