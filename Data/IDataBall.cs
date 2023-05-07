@@ -15,14 +15,14 @@ namespace Data
         public abstract double TempYSpeed { get; set; }
         public abstract double YSpeed { get; set; }
         public abstract int Radius { get; set; }
-
+        public abstract bool IsMoved { get; set; }
         public abstract void Move();
 
         public abstract event PropertyChangedEventHandler? PropertyChanged;
 
-        public static IDataBall CreateDataBall(int posX, int posY, int weight, int radius, int xSpeed, int ySpeed)
+        public static IDataBall CreateDataBall(int posX, int posY, int radius, int weight, int xSpeed, int ySpeed)
         {
-            return new DataBall(posX, posY, weight, radius, xSpeed, ySpeed);
+            return new DataBall(posX, posY, radius, weight, xSpeed, ySpeed);
         }
     }
 }

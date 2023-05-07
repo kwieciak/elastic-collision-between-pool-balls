@@ -22,7 +22,7 @@ namespace Data
         public override double PosY
         {
             get => _PosY;
-            set { _PosY = value; RaisePropertyChanged(); }
+            set { _PosY = value;}
         }
         public override int Weight { get; set; }
         public override double XSpeed { get; set; }
@@ -30,8 +30,10 @@ namespace Data
         public override int Radius { get; set;}
         public override double TempXSpeed { get; set; }
         public override double TempYSpeed { get; set; }
+        public override bool IsMoved { get; set; }
 
-        public DataBall(int posX, int posY, int weight, int radius, int xSpeed, int ySpeed)
+        private Object _locker = new object();
+        public DataBall(int posX, int posY,  int radius, int weight, int xSpeed, int ySpeed)
         {
             PosX = posX;
             PosY = posY;
@@ -40,13 +42,20 @@ namespace Data
             YSpeed = ySpeed;
             Radius = radius;
             Task.Run(StartMovement);
+            IsMoved = false;
         }
 
         public void StartMovement()
         {
             while (true)
             {
-                Move();
+                lock (this)
+                {
+                    if (!IsMoved)
+                    {
+                        Move();
+                    }
+                }
                 Task.Delay(10).Wait();
             }
         }

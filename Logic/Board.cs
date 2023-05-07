@@ -43,22 +43,24 @@ namespace Logic
                 Random random = new Random();
                 int x = random.Next(radius, sizeX - radius);
                 int y = random.Next(radius, sizeY - radius);
-                int weight = random.Next(1, 5);
+                int weight = random.Next(3, 3);
                 int SpeedX;
                 do
                 {
-                    SpeedX = random.Next(-5, 5);
+                    SpeedX = random.Next(-3, 3);
                 } while (SpeedX == 0);
                 int SpeedY;
                 do
                 {
-                    SpeedY = random.Next(-5, 5);
+                    SpeedY = random.Next(-3, 3);
                 } while (SpeedY == 0);
                 IDataBall dataBall = dataAPI.AddDataBall(x, y, _BallRadius, weight, SpeedX, SpeedY);
                 Ball ball = new Ball(dataBall.PosX, dataBall.PosY, radius);
+
                 dataBall.PropertyChanged += ball.UpdateBall;
                 dataBall.PropertyChanged += CheckCollisionWithWall;
                 dataBall.PropertyChanged += CheckBallsCollision;
+
                 Balls.Add(ball);
             }
         }
@@ -79,21 +81,15 @@ namespace Logic
         private void CheckBallsCollision(Object s, PropertyChangedEventArgs e)
         {
             IDataBall me = (IDataBall)s;
-            List<IDataBall> DataBalls = dataAPI.GetAllBalls();
-            foreach (IDataBall ball in DataBalls)
+            foreach (IDataBall ball in dataAPI.GetAllBalls())
             {
-                if (!ball.Equals(me))
+                if (ball!=me)
                 {
-                    if (Math.Sqrt(Math.Pow(ball.PosX - me.PosX , 2) + Math.Pow(ball.PosY - me.PosY, 2)) < me.Radius + ball.Radius) //zmienione na euklidesowa (ale nie sprawdzalem czy dobrze dziala)
+                    if (Math.Sqrt(Math.Pow(ball.PosX - me.PosX , 2) + Math.Pow(ball.PosY - me.PosY, 2)) <= me.Radius+ball.Radius) //zmienione na euklidesowa (ale nie sprawdzalem czy dobrze dziala)
                     {
-                        lock (_locker)
+                        lock (me)
                         {
-                            CollideWithBall(me, ball);
-                            CollideWithBall(ball, me);
-                            ApplyTempSpeed(ball);
-                            ApplyTempSpeed(me);
-                            me.Move();
-                            ball.Move();
+                            ballCollision(me, ball);
                         }
                     }
                 }
@@ -104,6 +100,26 @@ namespace Logic
             ball.YSpeed = ball.TempYSpeed;
             ball.XSpeed = ball.TempXSpeed;
         }
+
+        private void ballCollision(IDataBall ball, IDataBall otherBall)
+        {
+            if (Math.Sqrt(Math.Pow(ball.PosX+ball.XSpeed - otherBall.PosX - otherBall.XSpeed, 2) + Math.Pow(ball.PosY + ball.YSpeed - otherBall.PosY - otherBall.YSpeed, 2)) <= otherBall.Radius + ball.Radius)
+            {
+                double weight = 1d;
+
+                double newXMovement = (2d * weight * ball.XSpeed) / (2d * weight);
+                ball.XSpeed = (2d * weight * otherBall.XSpeed) / (2d * weight);
+                otherBall.XSpeed = newXMovement;
+
+                double newYMovement = (2 * weight * ball.YSpeed) / (2d * weight);
+                ball.YSpeed = (2d * weight * otherBall.YSpeed) / (2d * weight);
+                otherBall.YSpeed = newYMovement;
+            }
+        }
+
+
+        
+        /*
         public void CollideWithBall(IDataBall me, IDataBall collider)
         {
             //Te dwie zmienne sa tymczasowe, poki nei dodamy masy do Balla
@@ -139,7 +155,7 @@ namespace Logic
             // addToSpeedY = ourSpeed*sin(ourMovementAngle - contactAngle)*sin(contactAngle + PI/2)
             //contactAngle is the angle of a line connecting the centers of the balls
         }
-
+        */
 
 
 

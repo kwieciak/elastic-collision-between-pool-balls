@@ -19,7 +19,7 @@ namespace ViewModel
 
         private String _BallsAmount = "";
 
-        private int _ballRadius = 10;
+        private int _ballRadius = 12;
 
         public String BallsAmount
         {
