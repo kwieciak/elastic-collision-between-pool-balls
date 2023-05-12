@@ -23,7 +23,7 @@ namespace Model
             {
                 ICircle c = ICircle.CreateCircle((int)ball.PosX, (int)ball.PosY, _radius);
                 Circles.Add(c);                                  //Ponizej dodajemy metode, ktora bedzie wywolywana za kazdym razem, gdy ball zglosi PropertyChanged
-                ball.PropertyChanged += c.UpdateCircle!;         //wykrzyknik nie jest konieczny, to tylko mowi kompilatorowi ze metoda UpdateCircle nie bedzie NULLem
+                ball.ChangedPosition += c.UpdateCircle!;         //wykrzyknik nie jest konieczny, to tylko mowi kompilatorowi ze metoda UpdateCircle nie bedzie NULLem
             }
             return Circles;
         }

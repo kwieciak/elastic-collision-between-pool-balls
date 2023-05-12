@@ -46,17 +46,11 @@ namespace Model
          *      IDE z jakiegos powodu nie wypluwa bledu w takiej sytuacji
          *      i powoduje to crash procesu (odwolujemy sie do pamieci do ktorej nie mamy dostepu)
          */
-        public override void UpdateCircle(Object s, PropertyChangedEventArgs e)
+        public override void UpdateCircle(Object s, LogicEventArgs e)
         {
             IBall ball = (IBall)s;
-            if (e.PropertyName == "PosX")
-            {
-                x = (int)ball.PosX;
-            }
-            else if (e.PropertyName == "PosY")
-            {
-                y = (int)ball.PosY;
-            }
+            x = (int)ball.PosX;
+            y = (int)ball.PosY;
         }
 
         private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -15,6 +16,8 @@ namespace Logic
 
         public abstract double PosX { get; set; }
         public abstract double PosY { get; set; }
+        public abstract event EventHandler<LogicEventArgs>? ChangedPosition;
+
         /*
         public abstract int Radius { get; set; }
 
@@ -26,9 +29,6 @@ namespace Logic
         public abstract void CheckCollision(int BoardWidth, int BoardHeight);
         public abstract void CollideWithBall(IBall collider);
         public abstract void ApplyTempSpeed();*/
-
-
-        public abstract event PropertyChangedEventHandler? PropertyChanged;
 
     }
 }

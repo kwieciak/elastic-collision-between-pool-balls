@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Logic
 {
-    internal class Ball : IBall, INotifyPropertyChanged
+    internal class Ball : IBall
     {
         private double _PosX;
         private double _PosY;
@@ -17,16 +17,17 @@ namespace Logic
         private double _SpeedY;*/
 
 
-        public override event PropertyChangedEventHandler? PropertyChanged;             // To wykrywa (I suppose) wszystkie wywolania RaisePropertyChanged()
+        public override event EventHandler<LogicEventArgs>? ChangedPosition;
+        // To wykrywa (I suppose) wszystkie wywolania RaisePropertyChanged()
         public override double PosX
         {
             get => _PosX;
-            set { _PosX = value; RaisePropertyChanged(); }
+            set { _PosX = value;}
         }
         public override double PosY
         {
             get => _PosY;
-            set { _PosY = value; RaisePropertyChanged(); }
+            set { _PosY = value; }
         }
         /*
         public override int Radius
@@ -58,16 +59,14 @@ namespace Logic
         }
 
         
-        private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
-        public void UpdateBall(Object s, PropertyChangedEventArgs e)
+        public void UpdateBall(Object s, DataEventArgs e)
         {
             IDataBall ball = (IDataBall)s;
             PosX = ball.PosX;
             PosY = ball.PosY;
+            LogicEventArgs args = new LogicEventArgs(this);
+            ChangedPosition?.Invoke(this, args);
         }
         /*
         public override void moveBall()

@@ -12,12 +12,12 @@ namespace Data
         private double _PosX;
         private double _PosY;
 
-        public override event PropertyChangedEventHandler? PropertyChanged;
+        public override event EventHandler<DataEventArgs>? ChangedPosition;
 
         public override double PosX
         {
             get => _PosX;
-            set { _PosX = value; RaisePropertyChanged(); }
+            set { _PosX = value; }
         }
         public override double PosY
         {
@@ -30,10 +30,7 @@ namespace Data
         public override int Radius { get; set;}
         public override double TempXSpeed { get; set; }
         public override double TempYSpeed { get; set; }
-        public override bool IsMoved { get; set; }
         public override bool HasCollided { get; set; }
-
-        private Object _locker = new object();
         public DataBall(int posX, int posY,  int radius, int weight, int xSpeed, int ySpeed)
         {
             PosX = posX;
@@ -43,7 +40,6 @@ namespace Data
             YSpeed = ySpeed;
             Radius = radius;
             Task.Run(StartMovement);
-            IsMoved = false;
             HasCollided = false;
         }
 
@@ -53,10 +49,7 @@ namespace Data
             {
                 lock (this)
                 {
-                    if (!IsMoved)
-                    {
-                        Move();
-                    }
+                     Move();
                 }
                 HasCollided = false;
                 await Task.Delay(10);
@@ -67,11 +60,14 @@ namespace Data
         {
             PosX += XSpeed;
             PosY += YSpeed;
+            DataEventArgs args = new DataEventArgs(this);
+            ChangedPosition?.Invoke(this, args);
         }
 
+        /*
         private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        }*/
     }
 }

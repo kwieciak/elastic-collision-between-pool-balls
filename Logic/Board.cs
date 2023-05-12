@@ -15,7 +15,6 @@ namespace Logic
 
         private int _BallRadius { get; set; }
         public List<IBall> Balls { get; set; }
-        public List<Task> Tasks { get; set; }
 
         private Object _locker = new Object();
 
@@ -27,7 +26,6 @@ namespace Logic
         {
             this.sizeX = sizeX;
             this.sizeY = sizeY;
-            Tasks = new List<Task>();
             Balls = new List<IBall>();
             dataAPI = IDataBoard.CreateApi(sizeY, sizeX);
         }
@@ -58,15 +56,15 @@ namespace Logic
                 Ball ball = new Ball(dataBall.PosX, dataBall.PosY);
 
                 //dodajemy do eventu funkcje, ktore beda sie wywolywaly po wykonaniu Move(), bo wtedy jest PropertyChanged wywolywane
-                dataBall.PropertyChanged += ball.UpdateBall;    //ball to nasz ball w logice, nie w data
-                dataBall.PropertyChanged += CheckCollisionWithWall;
-                dataBall.PropertyChanged += CheckBallsCollision;
+                dataBall.ChangedPosition += ball.UpdateBall;    //ball to nasz ball w logice, nie w data
+                dataBall.ChangedPosition += CheckCollisionWithWall;
+                dataBall.ChangedPosition += CheckBallsCollision;
 
                 Balls.Add(ball);
             }
         }
 
-        private void CheckCollisionWithWall(Object s, PropertyChangedEventArgs e)
+        private void CheckCollisionWithWall(Object s, DataEventArgs e)
         {
             
             IDataBall ball = (IDataBall)s;
@@ -83,7 +81,7 @@ namespace Logic
             }
         }
 
-        private void CheckBallsCollision(Object s, PropertyChangedEventArgs e)
+        private void CheckBallsCollision(Object s, DataEventArgs e)
         {
             IDataBall me = (IDataBall)s;
             if(!me.HasCollided)
@@ -172,26 +170,7 @@ namespace Logic
         // tutaj jest problem, bo nie usuwamy instancji kulek (tzn. taski dalej sie wykonuja w tle, ale nie ma ich narysowanych na planszy)
         public override void ClearBoard()
         {
-            bool IsEveryTaskCompleted = false;
-       
-                while (!IsEveryTaskCompleted)               // Ta petla upewnia sie, ze wszystkie Taski sa w stanie "Completed"
-                {                                           // Gdy wszystkie beda Completed to skonczy sie ona i funkcja Task.Dispose()                                        
-                    IsEveryTaskCompleted = true;            // uwolni wszystkie uzywane przez taski zasoby
-                    foreach (Task task in Tasks)
-                    {
-                        if (!task.IsCompleted)
-                        {
-                            IsEveryTaskCompleted = false;
-                            break;
-                        }
-                    }
-                }
-
-                foreach (Task task in Tasks)
-                {
-                    task.Dispose();                         // Uwalnianie zasobow uzywanych przez dany task
-                }
-                Balls.Clear();
+            Balls.Clear();
         }
 
 
