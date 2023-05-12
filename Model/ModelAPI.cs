@@ -8,10 +8,11 @@ namespace Model
     {
         private LogicAbstractAPI _logicAPI;
         private ObservableCollection<ICircle> Circles = new ObservableCollection<ICircle>();
+        private int _radius;
 
         public ModelAPI()
         {
-            _logicAPI = LogicAbstractAPI.CreateAPIInstance();
+            _logicAPI = LogicAbstractAPI.CreateAPIInstance();  
         }
 
 
@@ -20,7 +21,7 @@ namespace Model
             Circles.Clear();
             foreach(IBall ball in _logicAPI.GetAllBalls())
             {
-                ICircle c = ICircle.CreateCircle((int)ball.PosX, (int)ball.PosY, (int)ball.Radius);
+                ICircle c = ICircle.CreateCircle((int)ball.PosX, (int)ball.PosY, _radius);
                 Circles.Add(c);                                  //Ponizej dodajemy metode, ktora bedzie wywolywana za kazdym razem, gdy ball zglosi PropertyChanged
                 ball.PropertyChanged += c.UpdateCircle!;         //wykrzyknik nie jest konieczny, to tylko mowi kompilatorowi ze metoda UpdateCircle nie bedzie NULLem
             }
@@ -35,6 +36,7 @@ namespace Model
 
         public override void Start(int BallsAmount, int Radius)
         {
+            _radius = Radius;
             _logicAPI.AddBalls(BallsAmount, Radius); 
         }
 

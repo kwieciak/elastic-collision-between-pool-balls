@@ -31,6 +31,7 @@ namespace Data
         public override double TempXSpeed { get; set; }
         public override double TempYSpeed { get; set; }
         public override bool IsMoved { get; set; }
+        public override bool HasCollided { get; set; }
 
         private Object _locker = new object();
         public DataBall(int posX, int posY,  int radius, int weight, int xSpeed, int ySpeed)
@@ -43,9 +44,10 @@ namespace Data
             Radius = radius;
             Task.Run(StartMovement);
             IsMoved = false;
+            HasCollided = false;
         }
 
-        public void StartMovement()
+        public async void StartMovement()
         {
             while (true)
             {
@@ -56,7 +58,8 @@ namespace Data
                         Move();
                     }
                 }
-                Task.Delay(10).Wait();
+                HasCollided = false;
+                await Task.Delay(10);
             }
         }
 

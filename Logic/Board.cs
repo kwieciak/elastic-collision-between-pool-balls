@@ -18,8 +18,7 @@ namespace Logic
         public List<Task> Tasks { get; set; }
 
         private Object _locker = new Object();
-        private Barrier _barrier;
-        private Barrier _barrier2;
+
         public IDataBoard dataAPI;
 
 
@@ -36,70 +35,79 @@ namespace Logic
         public override void AddBalls(int number, int radius)
         {
             _BallRadius = radius;
-            _barrier = new Barrier(number);
-            _barrier2 = new Barrier(number);
             for (int i = 0; i < number; i++)
             {
                 Random random = new Random();
                 int x = random.Next(radius, sizeX - radius);
                 int y = random.Next(radius, sizeY - radius);
                 int weight = random.Next(3, 3);
+
                 int SpeedX;
                 do
                 {
                     SpeedX = random.Next(-3, 3);
                 } while (SpeedX == 0);
+
                 int SpeedY;
                 do
                 {
                     SpeedY = random.Next(-3, 3);
                 } while (SpeedY == 0);
-                IDataBall dataBall = dataAPI.AddDataBall(x, y, _BallRadius, weight, SpeedX, SpeedY);
-                Ball ball = new Ball(dataBall.PosX, dataBall.PosY, radius);
 
-                dataBall.PropertyChanged += ball.UpdateBall;
+                IDataBall dataBall = dataAPI.AddDataBall(x, y, _BallRadius, weight, SpeedX, SpeedY);
+                Ball ball = new Ball(dataBall.PosX, dataBall.PosY);
+
+                //dodajemy do eventu funkcje, ktore beda sie wywolywaly po wykonaniu Move(), bo wtedy jest PropertyChanged wywolywane
+                dataBall.PropertyChanged += ball.UpdateBall;    //ball to nasz ball w logice, nie w data
                 dataBall.PropertyChanged += CheckCollisionWithWall;
                 dataBall.PropertyChanged += CheckBallsCollision;
 
                 Balls.Add(ball);
             }
         }
+
         private void CheckCollisionWithWall(Object s, PropertyChangedEventArgs e)
         {
+            
             IDataBall ball = (IDataBall)s;
-
-            if (ball.PosX + ball.XSpeed + ball.Radius > dataAPI.Width || ball.PosX + ball.XSpeed - ball.Radius < 0)
+            if (!ball.HasCollided)
             {
-                ball.XSpeed *= -1;
-            }
-            if (ball.PosY + ball.YSpeed + ball.Radius > dataAPI.Height || ball.PosY + ball.YSpeed - ball.Radius < 0)
-            {
-                ball.YSpeed *= -1;
+                if (ball.PosX + ball.XSpeed + ball.Radius > dataAPI.Width || ball.PosX + ball.XSpeed - ball.Radius < 0)
+                {
+                    ball.XSpeed *= -1;
+                }
+                if (ball.PosY + ball.YSpeed + ball.Radius > dataAPI.Height || ball.PosY + ball.YSpeed - ball.Radius < 0)
+                {
+                    ball.YSpeed *= -1;
+                }
             }
         }
 
         private void CheckBallsCollision(Object s, PropertyChangedEventArgs e)
         {
             IDataBall me = (IDataBall)s;
-            foreach (IDataBall ball in dataAPI.GetAllBalls())
+            if(!me.HasCollided)
             {
-                if (ball!=me)
+                lock(_locker)
                 {
-                    if (Math.Sqrt(Math.Pow(ball.PosX - me.PosX , 2) + Math.Pow(ball.PosY - me.PosY, 2)) <= me.Radius+ball.Radius) //zmienione na euklidesowa (ale nie sprawdzalem czy dobrze dziala)
+                    foreach (IDataBall ball in dataAPI.GetAllBalls())
                     {
-                        lock (me)
+                        if (ball!=me)
                         {
-                            ballCollision(me, ball);
+                            if (Math.Sqrt(Math.Pow(ball.PosX - me.PosX , 2) + Math.Pow(ball.PosY - me.PosY, 2)) <= 2*_BallRadius) 
+                            {
+                                ballCollision(me, ball);
+                            }
                         }
                     }
                 }
             }
         }
-        public void ApplyTempSpeed(IDataBall ball)
+        /*public void ApplyTempSpeed(IDataBall ball)
         {
             ball.YSpeed = ball.TempYSpeed;
             ball.XSpeed = ball.TempXSpeed;
-        }
+        }*/
 
         private void ballCollision(IDataBall ball, IDataBall otherBall)
         {
@@ -114,6 +122,9 @@ namespace Logic
                 double newYMovement = (2 * weight * ball.YSpeed) / (2d * weight);
                 ball.YSpeed = (2d * weight * otherBall.YSpeed) / (2d * weight);
                 otherBall.YSpeed = newYMovement;
+
+                ball.HasCollided = true;
+                otherBall.HasCollided = true;
             }
         }
 
@@ -158,7 +169,7 @@ namespace Logic
         */
 
 
-
+        // tutaj jest problem, bo nie usuwamy instancji kulek (tzn. taski dalej sie wykonuja w tle, ale nie ma ich narysowanych na planszy)
         public override void ClearBoard()
         {
             bool IsEveryTaskCompleted = false;
@@ -181,7 +192,6 @@ namespace Logic
                     task.Dispose();                         // Uwalnianie zasobow uzywanych przez dany task
                 }
                 Balls.Clear();
-                Tasks.Clear();                              // Dispose chyba nie usuwa obiektu, wiec trzeba wyczyscic liste                                     
         }
 
 

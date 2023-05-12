@@ -8,21 +8,14 @@ using System.Text;
 
 namespace Logic
 {
-    /* Ball implementuje interfejs INotifyPropertyChanged
-     * tworzac event PropertyChanged
-     * 
-     * Metoda RaisePropertyChanged() informuje warstwe wyzsza, ze zmienil sie ktorys z atrybutow,
-     * tzn. zostal uzyty setter dla tego atrybutu.
-     * 
-     * W ModelAPI (linijka 25) okresla co sie stanie, gdy nastapi jakas zmiana atrybutu (tzn. jaka funkcja zostanie wywolana).
-     */
     internal class Ball : IBall, INotifyPropertyChanged
     {
         private double _PosX;
         private double _PosY;
-        private int _Radius;
+        /*private int _Radius;
         private double _SpeedX;
-        private double _SpeedY;
+        private double _SpeedY;*/
+
 
         public override event PropertyChangedEventHandler? PropertyChanged;             // To wykrywa (I suppose) wszystkie wywolania RaisePropertyChanged()
         public override double PosX
@@ -35,12 +28,13 @@ namespace Logic
             get => _PosY;
             set { _PosY = value; RaisePropertyChanged(); }
         }
-
+        /*
         public override int Radius
         {
             get => _Radius;
-            set {  _Radius = value; RaisePropertyChanged();}
-        }
+            set {  _Radius = value;}
+        }*/
+        /*
         public override double SpeedX
         {
             get => _SpeedX;
@@ -50,29 +44,38 @@ namespace Logic
         {
             get => _SpeedY;
             set { _SpeedY = value; }
-        }
+        }*/
 
 
-        public int _TempSpeedX { get; set; }
+        /*public int _TempSpeedX { get; set; }
         public int _TempSpeedY { get; set; }
-        public override bool IsBouncedBack { get;set; }
+        public override bool IsBouncedBack { get;set; }*/
 
-        internal Ball(double posX, double posY, int radius)       
+        internal Ball(double posX, double posY)       
         {                                                   
             this.PosX = posX;
             this.PosY = posY;
-            this.Radius = radius;
-            IsBouncedBack = false;
         }
 
+        
+        private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
+        public void UpdateBall(Object s, PropertyChangedEventArgs e)
+        {
+            IDataBall ball = (IDataBall)s;
+            PosX = ball.PosX;
+            PosY = ball.PosY;
+        }
+        /*
         public override void moveBall()
         {
             PosX += SpeedX;
             PosY += SpeedY;
-        }
-
-        public override void CheckCollision(int BoardWidth ,int BoardHeight)
+        }*/
+        /*public override void CheckCollision(int BoardWidth ,int BoardHeight)
         {
             if(this.PosX + this.SpeedX + this.Radius > BoardWidth || this.PosX + this.SpeedX - this.Radius < 0)
             {
@@ -82,12 +85,13 @@ namespace Logic
             {
                 SpeedY *= -1;
             }
-        }
+        }*/
 
 
         /* Ta funkcja prawdopodobnie bedzie w Boardzie (jakkolwiek bedzie sie ten Board nazywal po refaktoringu, ale no, w Logice bedzie)
          * Bedzie trzeba przekazywac dwie kulki (zamist jednej) i ustawiać im setterami obliczone predkosci
          */
+        /*
         public override void CollideWithBall(IBall collider)
         {
             //Te dwie zmienne sa tymczasowe, poki nei dodamy masy do Balla
@@ -130,18 +134,8 @@ namespace Logic
         {
             SpeedX = _TempSpeedX;
             SpeedY = _TempSpeedY;
-        }
+        }*/
 
-        private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)   
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
-        public void UpdateBall(Object s, PropertyChangedEventArgs e)
-        {
-            IDataBall ball = (IDataBall)s;
-            PosX = ball.PosX;
-            PosY = ball.PosY;
-        }
     }
 }

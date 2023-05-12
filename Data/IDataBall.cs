@@ -16,6 +16,7 @@ namespace Data
         public abstract double YSpeed { get; set; }
         public abstract int Radius { get; set; }
         public abstract bool IsMoved { get; set; }
+        public abstract bool HasCollided { get; set; }
         public abstract void Move();
 
         public abstract event PropertyChangedEventHandler? PropertyChanged;
