@@ -169,7 +169,12 @@ namespace Logic
         // tutaj jest problem, bo nie usuwamy instancji kulek (tzn. taski dalej sie wykonuja w tle, ale nie ma ich narysowanych na planszy)
         public override void ClearBoard()
         {
+            foreach(IDataBall ball in dataAPI.GetAllBalls().ToArray())
+            {
+                ball.ContinueMoving = false;
+            }
             Balls.Clear();
+            dataAPI.RemoveAllBalls();
         }
 
         public override List<IBall> GetAllBalls()
