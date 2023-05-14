@@ -23,12 +23,12 @@ namespace Logic
 
 
 
-        public Board(int SizeX, int SizeY)
+        public Board(IDataBoard api)
         {
-            sizeX = SizeX;
-            sizeY = SizeY;
+            sizeX = api.Width;
+            sizeY = api.Height;
             Balls = new List<IBall>();
-            dataAPI = IDataBoard.CreateApi(sizeY, sizeX);
+            dataAPI = api;
         }
 
         public override void AddBalls(int number, int radius)

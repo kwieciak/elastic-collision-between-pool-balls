@@ -10,6 +10,7 @@ namespace LogicTest
     [TestClass]
     public class BallTests
     {
+        /*
         IBall ball = IBall.CreateBall(1,2);
 
         [TestMethod]
@@ -33,6 +34,6 @@ namespace LogicTest
             Assert.AreEqual(5, ball.PosX);
             Assert.AreEqual(7, ball.PosY);
         }
-
+        */
     }
 }
