@@ -17,6 +17,7 @@ namespace Data
         public override Vector2 Position
         {
             get => _position;
+            set {_position = value;}
         }
 
         public override Vector2 Speed { get; set; }

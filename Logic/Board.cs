@@ -58,10 +58,32 @@ namespace Logic
 
                 //dodajemy do eventu funkcje, ktore beda sie wywolywaly po wykonaniu Move(), bo wtedy jest PropertyChanged wywolywane
                 dataBall.ChangedPosition += ball.UpdateBall;        //ball to nasz ball w logice, nie w data
-                dataBall.ChangedPosition += CheckCollisionWithWall;
                 dataBall.ChangedPosition += CheckBallsCollision;
+                dataBall.ChangedPosition += CheckCollisionWithWall;
+                dataBall.ChangedPosition += CheckForBugs;
 
                 Balls.Add(ball);
+            }
+        }
+
+        private void CheckForBugs(Object s, DataEventArgs e)
+        {
+            IDataBall ball = (IDataBall)s;
+            if (ball.Position.X + _BallRadius > dataAPI.Width)
+            {
+                ball.Position = new Vector2(dataAPI.Width - _BallRadius, ball.Position.Y);
+            }
+            if (ball.Position.X - _BallRadius < 0)
+            {
+                ball.Position = new Vector2(_BallRadius, ball.Position.Y);
+            }
+            if (ball.Position.Y + _BallRadius > dataAPI.Height)
+            {
+                ball.Position = new Vector2(ball.Position.X, dataAPI.Height - _BallRadius);
+            }
+            if (ball.Position.Y - _BallRadius < 0)
+            {
+                ball.Position = new Vector2(ball.Position.X, _BallRadius);
             }
         }
 

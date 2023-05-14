@@ -8,7 +8,7 @@ namespace Data
 {
     public abstract class IDataBall
     {
-        public abstract Vector2 Position { get;}
+        public abstract Vector2 Position { get; set; }
         public abstract Vector2 Speed { get; set; }
         public abstract bool HasCollided { get; set; }
         public abstract bool ContinueMoving { get; set; }
