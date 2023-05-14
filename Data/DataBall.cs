@@ -17,28 +17,20 @@ namespace Data
         public override double PosX
         {
             get => _PosX;
-            set { _PosX = value; }
         }
         public override double PosY
         {
             get => _PosY;
-            set { _PosY = value;}
         }
-        public override int Weight { get; set; }
         public override double XSpeed { get; set; }
         public override double YSpeed { get; set;}
-        public override int Radius { get; set;}
-        public override double TempXSpeed { get; set; }
-        public override double TempYSpeed { get; set; }
         public override bool HasCollided { get; set; }
         public DataBall(int posX, int posY,  int radius, int weight, int xSpeed, int ySpeed)
         {
-            PosX = posX;
-            PosY = posY;
-            Weight = weight;
+            _PosX = posX;
+            _PosY = posY;
             XSpeed = xSpeed;
             YSpeed = ySpeed;
-            Radius = radius;
             Task.Run(StartMovement);
             HasCollided = false;
         }
@@ -55,16 +47,11 @@ namespace Data
 
         public override void Move()
         {
-            PosX += XSpeed;
-            PosY += YSpeed;
+            _PosX += XSpeed;
+            _PosY += YSpeed;
             DataEventArgs args = new DataEventArgs(this);
             ChangedPosition?.Invoke(this, args);
         }
 
-        /*
-        private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }*/
     }
 }

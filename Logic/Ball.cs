@@ -22,12 +22,10 @@ namespace Logic
         public override double PosX
         {
             get => _PosX;
-            set { _PosX = value;}
         }
         public override double PosY
         {
             get => _PosY;
-            set { _PosY = value; }
         }
         /*
         public override int Radius
@@ -54,8 +52,8 @@ namespace Logic
 
         internal Ball(double posX, double posY)       
         {                                                   
-            this.PosX = posX;
-            this.PosY = posY;
+            _PosX = posX;
+            _PosY = posY;
         }
 
         
@@ -63,8 +61,8 @@ namespace Logic
         public void UpdateBall(Object s, DataEventArgs e)
         {
             IDataBall ball = (IDataBall)s;
-            PosX = ball.PosX;
-            PosY = ball.PosY;
+            _PosX = ball.PosX;
+            _PosY = ball.PosY;
             LogicEventArgs args = new LogicEventArgs(this);
             ChangedPosition?.Invoke(this, args);
         }

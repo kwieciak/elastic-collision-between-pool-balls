@@ -7,14 +7,10 @@ namespace Data
 {
     public abstract class IDataBall
     {
-        public abstract double PosX { get; set; }
-        public abstract double PosY { get; set; }
-        public abstract int Weight { get; set; }
+        public abstract double PosX { get;  }
+        public abstract double PosY { get;  }
         public abstract double XSpeed { get; set; }
-        public abstract double TempXSpeed { get; set; }
-        public abstract double TempYSpeed { get; set; }
         public abstract double YSpeed { get; set; }
-        public abstract int Radius { get; set; }
         public abstract bool HasCollided { get; set; }
         public abstract void Move();
 

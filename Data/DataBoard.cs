@@ -8,8 +8,8 @@ namespace Data
 {
     internal class DataBoard:IDataBoard
     {
-        public override int Width { get; set; }
-        public override int Height { get; set; }
+        public override int Width { get;}
+        public override int Height { get;}
 
         private List<IDataBall> Balls = new List<IDataBall>();
 

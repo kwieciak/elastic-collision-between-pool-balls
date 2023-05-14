@@ -17,7 +17,7 @@ namespace Model
 
         public abstract int x { get;set; }
         public abstract int y { get;set; }
-        public abstract int radius { get; set; }
+        public abstract int radius { get; }
 
         public abstract void UpdateCircle(Object s, LogicEventArgs e);
 

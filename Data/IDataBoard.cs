@@ -6,8 +6,8 @@ namespace Data
 {
     public abstract class IDataBoard
     {
-        public abstract int Width {get;set;}
-        public abstract int Height { get;set;}
+        public abstract int Width {get;}
+        public abstract int Height { get;}
 
         public abstract List<IDataBall> GetAllBalls();
         public abstract void RemoveAllBalls();

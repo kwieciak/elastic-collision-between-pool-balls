@@ -10,8 +10,8 @@ namespace Logic
 {
     internal class Board : LogicAbstractAPI
     {
-        public int sizeX { get; set; }
-        public int sizeY { get; set; }
+        private int sizeX;
+        private int sizeY;
 
         private int _BallRadius { get; set; }
         public List<IBall> Balls { get; set; }
@@ -22,10 +22,10 @@ namespace Logic
 
 
 
-        public Board(int sizeX, int sizeY)
+        public Board(int SizeX, int SizeY)
         {
-            this.sizeX = sizeX;
-            this.sizeY = sizeY;
+            sizeX = SizeX;
+            sizeY = SizeY;
             Balls = new List<IBall>();
             dataAPI = IDataBoard.CreateApi(sizeY, sizeX);
         }
@@ -56,7 +56,7 @@ namespace Logic
                 Ball ball = new Ball(dataBall.PosX, dataBall.PosY);
 
                 //dodajemy do eventu funkcje, ktore beda sie wywolywaly po wykonaniu Move(), bo wtedy jest PropertyChanged wywolywane
-                dataBall.ChangedPosition += ball.UpdateBall;    //ball to nasz ball w logice, nie w data
+                dataBall.ChangedPosition += ball.UpdateBall;        //ball to nasz ball w logice, nie w data
                 dataBall.ChangedPosition += CheckCollisionWithWall;
                 dataBall.ChangedPosition += CheckBallsCollision;
 
@@ -70,11 +70,11 @@ namespace Logic
             IDataBall ball = (IDataBall)s;
             if (!ball.HasCollided)
             {
-                if (ball.PosX + ball.XSpeed + ball.Radius > dataAPI.Width || ball.PosX + ball.XSpeed - ball.Radius < 0)
+                if (ball.PosX + ball.XSpeed + _BallRadius > dataAPI.Width || ball.PosX + ball.XSpeed - _BallRadius < 0)
                 {
                     ball.XSpeed *= -1;
                 }
-                if (ball.PosY + ball.YSpeed + ball.Radius > dataAPI.Height || ball.PosY + ball.YSpeed - ball.Radius < 0)
+                if (ball.PosY + ball.YSpeed + _BallRadius > dataAPI.Height || ball.PosY + ball.YSpeed - _BallRadius < 0)
                 {
                     ball.YSpeed *= -1;
                 }
@@ -105,7 +105,7 @@ namespace Logic
 
         private void ballCollision(IDataBall ball, IDataBall otherBall)
         {
-            if (Math.Sqrt(Math.Pow(ball.PosX+ball.XSpeed - otherBall.PosX - otherBall.XSpeed, 2) + Math.Pow(ball.PosY + ball.YSpeed - otherBall.PosY - otherBall.YSpeed, 2)) <= otherBall.Radius + ball.Radius)
+            if (Math.Sqrt(Math.Pow(ball.PosX+ball.XSpeed - otherBall.PosX - otherBall.XSpeed, 2) + Math.Pow(ball.PosY + ball.YSpeed - otherBall.PosY - otherBall.YSpeed, 2)) <= _BallRadius + _BallRadius)
             {
                 double weight = 1d;
 
