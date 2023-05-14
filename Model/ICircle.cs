@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -13,12 +14,11 @@ namespace Model
             return new Circle(x, y, radius);
         }
 
+        public abstract int x { get; }
+        public abstract int y { get; }
+        public abstract int radius { get; }
 
-        public abstract int x { get;set; }
-        public abstract int y { get;set; }
-        public abstract int radius { get; set; }
-
-        public abstract void UpdateCircle(Object s, PropertyChangedEventArgs e);
+        public abstract void UpdateCircle(Object s, LogicEventArgs e);
 
         public abstract event PropertyChangedEventHandler? PropertyChanged;
         //public abstract void RaisePropertyChanged([CallerMemberName] string? propertyName = null);

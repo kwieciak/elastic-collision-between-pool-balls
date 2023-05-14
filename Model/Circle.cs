@@ -16,14 +16,14 @@ namespace Model
      */
     internal class Circle : ICircle, INotifyPropertyChanged
     {
-        public override int x { get => _x; set { _x = value; RaisePropertyChanged(); } }
-        public override int y { get => _y; set { _y = value; RaisePropertyChanged(); } }
+        public override int x { get => _x; }
+        public override int y { get => _y; }
 
-        public override int radius { get => _radius; set { _radius = value; RaisePropertyChanged(); } }
+        public override int radius { get => _radius; }
 
-        private int _x { get; set; }
-        private int _y { get; set; }
-        private int _radius { get; set; }
+        private int _x;
+        private int _y;
+        private int _radius;
 
         public Circle(int x, int y, int radius)
         {
@@ -46,17 +46,13 @@ namespace Model
          *      IDE z jakiegos powodu nie wypluwa bledu w takiej sytuacji
          *      i powoduje to crash procesu (odwolujemy sie do pamieci do ktorej nie mamy dostepu)
          */
-        public override void UpdateCircle(Object s, PropertyChangedEventArgs e)
+        public override void UpdateCircle(Object s, LogicEventArgs e)
         {
             IBall ball = (IBall)s;
-            if (e.PropertyName == "PosX")
-            {
-                x = (int)ball.PosX;
-            }
-            else if (e.PropertyName == "PosY")
-            {
-                y = (int)ball.PosY;
-            }
+            _x = (int)ball.Position.X;
+            RaisePropertyChanged("x");
+            _y = (int)ball.Position.Y;
+            RaisePropertyChanged("y");
         }
 
         private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)

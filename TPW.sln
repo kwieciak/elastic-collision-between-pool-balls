@@ -13,7 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ViewModel\ViewModel.csproj", "{BF971749-247B-47F8-926E-BC6C7425C680}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTest", "LogicTest\LogicTest.csproj", "{C1885AC2-FEC0-4DD2-9225-E9614C9164E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicTest", "LogicTest\LogicTest.csproj", "{C1885AC2-FEC0-4DD2-9225-E9614C9164E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTests", "DataTests\DataTests.csproj", "{D5CC3949-F65B-4D96-8FA5-D81AB0C53D4C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A97EF12A-111D-4802-A22A-ACE4CCF2A123} = {A97EF12A-111D-4802-A22A-ACE4CCF2A123}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +50,10 @@ Global
 		{C1885AC2-FEC0-4DD2-9225-E9614C9164E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1885AC2-FEC0-4DD2-9225-E9614C9164E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1885AC2-FEC0-4DD2-9225-E9614C9164E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5CC3949-F65B-4D96-8FA5-D81AB0C53D4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5CC3949-F65B-4D96-8FA5-D81AB0C53D4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5CC3949-F65B-4D96-8FA5-D81AB0C53D4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5CC3949-F65B-4D96-8FA5-D81AB0C53D4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
