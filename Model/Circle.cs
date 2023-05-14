@@ -49,9 +49,9 @@ namespace Model
         public override void UpdateCircle(Object s, LogicEventArgs e)
         {
             IBall ball = (IBall)s;
-            _x = (int)ball.PosX;
+            _x = (int)ball.Position.X;
             RaisePropertyChanged("x");
-            _y = (int)ball.PosY;
+            _y = (int)ball.Position.Y;
             RaisePropertyChanged("y");
         }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Numerics;
 using System.Text;
 
 namespace Logic
@@ -14,8 +15,7 @@ namespace Logic
             return new Ball(xPosition, yPosition);
         }
 
-        public abstract double PosX { get;}
-        public abstract double PosY { get;}
+        public abstract Vector2 Position {get; }
         public abstract event EventHandler<LogicEventArgs>? ChangedPosition;
 
         /*

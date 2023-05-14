@@ -14,7 +14,6 @@ namespace Data
         public override event EventHandler<DataEventArgs>? ChangedPosition;
 
         private Vector2 _position;
-
         public override Vector2 Position
         {
             get => _position;
@@ -23,17 +22,20 @@ namespace Data
         public override Vector2 Speed { get; set; }
         
         public override bool HasCollided { get; set; }
+        public override bool ContinueMoving { get; set; }
+
         public DataBall(int posX, int posY,  int radius, int weight, int xSpeed, int ySpeed)
         {
             _position = new Vector2(posX, posY);
             Speed = new Vector2(xSpeed, ySpeed);
+            ContinueMoving = true;
             Task.Run(StartMovement);
             HasCollided = false;
         }
 
         public async void StartMovement()
         {
-            while (true)
+            while (ContinueMoving)
             {
                 Move();
                 HasCollided = false;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
 
 namespace Logic
@@ -7,9 +8,9 @@ namespace Logic
 
     public abstract class LogicAbstractAPI
     {
-        public static LogicAbstractAPI CreateAPIInstance()
+        public static LogicAbstractAPI CreateAPIInstance(IDataBoard dataApi = null)
         {
-            return new Board(400,580); 
+            return new Board( dataApi==null ? IDataBoard.CreateApi() : dataApi); 
         }
 
 

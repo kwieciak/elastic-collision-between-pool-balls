@@ -11,6 +11,7 @@ namespace Data
         public abstract Vector2 Position { get;}
         public abstract Vector2 Speed { get; set; }
         public abstract bool HasCollided { get; set; }
+        public abstract bool ContinueMoving { get; set; }
         public abstract void Move();
 
         public abstract event EventHandler<DataEventArgs> ChangedPosition;
