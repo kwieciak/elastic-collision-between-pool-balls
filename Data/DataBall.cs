@@ -14,7 +14,6 @@ namespace Data
         public override event EventHandler<DataEventArgs>? ChangedPosition;
 
         private Vector2 _position;
-
         public override Vector2 Position
         {
             get => _position;

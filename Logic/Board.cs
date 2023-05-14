@@ -172,8 +172,6 @@ namespace Logic
             Balls.Clear();
         }
 
-
-
         public override List<IBall> GetAllBalls()
         {
             return Balls;
