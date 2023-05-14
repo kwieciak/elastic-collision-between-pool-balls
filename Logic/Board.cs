@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,8 +11,8 @@ namespace Logic
 {
     internal class Board : LogicAbstractAPI
     {
-        public int sizeX { get; set; }
-        public int sizeY { get; set; }
+        private int sizeX;
+        private int sizeY;
 
         private int _BallRadius { get; set; }
         public List<IBall> Balls { get; set; }
@@ -22,10 +23,10 @@ namespace Logic
 
 
 
-        public Board(int sizeX, int sizeY)
+        public Board(int SizeX, int SizeY)
         {
-            this.sizeX = sizeX;
-            this.sizeY = sizeY;
+            sizeX = SizeX;
+            sizeY = SizeY;
             Balls = new List<IBall>();
             dataAPI = IDataBoard.CreateApi(sizeY, sizeX);
         }
@@ -53,10 +54,10 @@ namespace Logic
                 } while (SpeedY == 0);
 
                 IDataBall dataBall = dataAPI.AddDataBall(x, y, _BallRadius, weight, SpeedX, SpeedY);
-                Ball ball = new Ball(dataBall.PosX, dataBall.PosY);
+                Ball ball = new Ball(dataBall.Position.X, dataBall.Position.Y);
 
                 //dodajemy do eventu funkcje, ktore beda sie wywolywaly po wykonaniu Move(), bo wtedy jest PropertyChanged wywolywane
-                dataBall.ChangedPosition += ball.UpdateBall;    //ball to nasz ball w logice, nie w data
+                dataBall.ChangedPosition += ball.UpdateBall;        //ball to nasz ball w logice, nie w data
                 dataBall.ChangedPosition += CheckCollisionWithWall;
                 dataBall.ChangedPosition += CheckBallsCollision;
 
@@ -70,13 +71,13 @@ namespace Logic
             IDataBall ball = (IDataBall)s;
             if (!ball.HasCollided)
             {
-                if (ball.PosX + ball.XSpeed + ball.Radius > dataAPI.Width || ball.PosX + ball.XSpeed - ball.Radius < 0)
+                if (ball.Position.X + ball.Speed.X + _BallRadius > dataAPI.Width || ball.Position.X + ball.Speed.X - _BallRadius < 0)
                 {
-                    ball.XSpeed *= -1;
+                    ball.Speed = new Vector2(-ball.Speed.X, ball.Speed.Y);
                 }
-                if (ball.PosY + ball.YSpeed + ball.Radius > dataAPI.Height || ball.PosY + ball.YSpeed - ball.Radius < 0)
+                if (ball.Position.Y + ball.Speed.Y + _BallRadius > dataAPI.Height || ball.Position.Y + ball.Speed.Y - _BallRadius < 0)
                 {
-                    ball.YSpeed *= -1;
+                    ball.Speed = new Vector2(ball.Speed.X, -ball.Speed.Y);
                 }
             }
         }
@@ -88,11 +89,11 @@ namespace Logic
             {
                 if (!me.HasCollided)
                 {  
-                    foreach (IDataBall ball in dataAPI.GetAllBalls())
+                    foreach (IDataBall ball in dataAPI.GetAllBalls().ToArray())
                     {
                         if (ball!=me)
                         {
-                            if (Math.Sqrt(Math.Pow(ball.PosX - me.PosX , 2) + Math.Pow(ball.PosY - me.PosY, 2)) <= 2*_BallRadius) 
+                            if (Math.Sqrt(Math.Pow(ball.Position.X - me.Position.X , 2) + Math.Pow(ball.Position.Y - me.Position.Y, 2)) <= 2*_BallRadius) 
                             {
                                 ballCollision(me, ball);
                             }
@@ -105,17 +106,19 @@ namespace Logic
 
         private void ballCollision(IDataBall ball, IDataBall otherBall)
         {
-            if (Math.Sqrt(Math.Pow(ball.PosX+ball.XSpeed - otherBall.PosX - otherBall.XSpeed, 2) + Math.Pow(ball.PosY + ball.YSpeed - otherBall.PosY - otherBall.YSpeed, 2)) <= otherBall.Radius + ball.Radius)
+            if (Math.Sqrt(Math.Pow(ball.Position.X+ball.Speed.X - otherBall.Position.X - otherBall.Speed.X, 2) + Math.Pow(ball.Position.Y + ball.Speed.Y - otherBall.Position.Y - otherBall.Speed.Y, 2)) <= _BallRadius + _BallRadius)
             {
-                double weight = 1d;
+                float weight = 1f;
 
-                double newXMovement = (2d * weight * ball.XSpeed) / (2d * weight);
-                ball.XSpeed = (2d * weight * otherBall.XSpeed) / (2d * weight);
-                otherBall.XSpeed = newXMovement;
+                float otherBallXMovement = (2f * weight * ball.Speed.X) / (2f * weight);
+                float ballXMovement = (2f * weight * otherBall.Speed.X) / (2f * weight);
 
-                double newYMovement = (2 * weight * ball.YSpeed) / (2d * weight);
-                ball.YSpeed = (2d * weight * otherBall.YSpeed) / (2d * weight);
-                otherBall.YSpeed = newYMovement;
+                float otherBallYMovement = (2f * weight * ball.Speed.Y) / (2f * weight);
+                float ballYMovement = (2f * weight * otherBall.Speed.Y) / (2f * weight);
+
+
+                ball.Speed = new Vector2(ballXMovement, ballYMovement);
+                otherBall.Speed = new Vector2(otherBallXMovement, otherBallYMovement);
 
                 ball.HasCollided = true;
                 otherBall.HasCollided = true;

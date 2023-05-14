@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,36 +10,23 @@ namespace Data
 {
     internal class DataBall:IDataBall
     {
-        private double _PosX;
-        private double _PosY;
 
         public override event EventHandler<DataEventArgs>? ChangedPosition;
 
-        public override double PosX
+        private Vector2 _position;
+
+        public override Vector2 Position
         {
-            get => _PosX;
-            set { _PosX = value; }
+            get => _position;
         }
-        public override double PosY
-        {
-            get => _PosY;
-            set { _PosY = value;}
-        }
-        public override int Weight { get; set; }
-        public override double XSpeed { get; set; }
-        public override double YSpeed { get; set;}
-        public override int Radius { get; set;}
-        public override double TempXSpeed { get; set; }
-        public override double TempYSpeed { get; set; }
+
+        public override Vector2 Speed { get; set; }
+        
         public override bool HasCollided { get; set; }
         public DataBall(int posX, int posY,  int radius, int weight, int xSpeed, int ySpeed)
         {
-            PosX = posX;
-            PosY = posY;
-            Weight = weight;
-            XSpeed = xSpeed;
-            YSpeed = ySpeed;
-            Radius = radius;
+            _position = new Vector2(posX, posY);
+            Speed = new Vector2(xSpeed, ySpeed);
             Task.Run(StartMovement);
             HasCollided = false;
         }
@@ -55,16 +43,11 @@ namespace Data
 
         public override void Move()
         {
-            PosX += XSpeed;
-            PosY += YSpeed;
+            _position.X += Speed.X;
+            _position.Y += Speed.Y;
             DataEventArgs args = new DataEventArgs(this);
             ChangedPosition?.Invoke(this, args);
         }
 
-        /*
-        private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }*/
     }
 }

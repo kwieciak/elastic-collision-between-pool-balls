@@ -8,8 +8,8 @@ namespace Data
 {
     internal class DataBoard:IDataBoard
     {
-        public override int Width { get; set; }
-        public override int Height { get; set; }
+        public override int Width { get;}
+        public override int Height { get;}
 
         private List<IDataBall> Balls = new List<IDataBall>();
 
@@ -28,7 +28,7 @@ namespace Data
             Balls.Clear();
         }
 
-        public override IDataBall AddDataBall(int xPosition, int yPosition, int radius, int weight, int xSpeed = 0, int ySpeed = 0)
+        public override IDataBall AddDataBall(int xPosition, int yPosition, int radius, int weight, int xSpeed, int ySpeed)
         {
             IDataBall ballData = IDataBall.CreateDataBall(xPosition, yPosition, radius, weight, xSpeed, ySpeed);
             Balls.Add(ballData);

@@ -14,8 +14,8 @@ namespace Logic
             return new Ball(xPosition, yPosition);
         }
 
-        public abstract double PosX { get; set; }
-        public abstract double PosY { get; set; }
+        public abstract double PosX { get;}
+        public abstract double PosY { get;}
         public abstract event EventHandler<LogicEventArgs>? ChangedPosition;
 
         /*

@@ -16,14 +16,14 @@ namespace Model
      */
     internal class Circle : ICircle, INotifyPropertyChanged
     {
-        public override int x { get => _x; set { _x = value; RaisePropertyChanged(); } }
-        public override int y { get => _y; set { _y = value; RaisePropertyChanged(); } }
+        public override int x { get => _x; }
+        public override int y { get => _y; }
 
-        public override int radius { get => _radius; set { _radius = value; RaisePropertyChanged(); } }
+        public override int radius { get => _radius; }
 
-        private int _x { get; set; }
-        private int _y { get; set; }
-        private int _radius { get; set; }
+        private int _x;
+        private int _y;
+        private int _radius;
 
         public Circle(int x, int y, int radius)
         {
@@ -49,8 +49,10 @@ namespace Model
         public override void UpdateCircle(Object s, LogicEventArgs e)
         {
             IBall ball = (IBall)s;
-            x = (int)ball.PosX;
-            y = (int)ball.PosY;
+            _x = (int)ball.PosX;
+            RaisePropertyChanged("x");
+            _y = (int)ball.PosY;
+            RaisePropertyChanged("y");
         }
 
         private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
