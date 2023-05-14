@@ -61,8 +61,8 @@ namespace Logic
         public void UpdateBall(Object s, DataEventArgs e)
         {
             IDataBall ball = (IDataBall)s;
-            _PosX = ball.PosX;
-            _PosY = ball.PosY;
+            _PosX = ball.Position.X;
+            _PosY = ball.Position.Y;
             LogicEventArgs args = new LogicEventArgs(this);
             ChangedPosition?.Invoke(this, args);
         }

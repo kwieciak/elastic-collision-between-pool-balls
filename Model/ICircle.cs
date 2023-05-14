@@ -14,9 +14,8 @@ namespace Model
             return new Circle(x, y, radius);
         }
 
-
-        public abstract int x { get;set; }
-        public abstract int y { get;set; }
+        public abstract int x { get; }
+        public abstract int y { get; }
         public abstract int radius { get; }
 
         public abstract void UpdateCircle(Object s, LogicEventArgs e);

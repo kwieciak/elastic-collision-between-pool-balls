@@ -11,7 +11,7 @@ namespace Data
 
         public abstract List<IDataBall> GetAllBalls();
         public abstract void RemoveAllBalls();
-        public abstract IDataBall AddDataBall(int xPosition, int yPosition, int radius, int weight, int xSpeed = 0, int ySpeed = 0);
+        public abstract IDataBall AddDataBall(int xPosition, int yPosition, int radius, int weight, int xSpeed, int ySpeed);
 
         public static IDataBoard CreateApi(int boardWidth, int boardHeight)
         {

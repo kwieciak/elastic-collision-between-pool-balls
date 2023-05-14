@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Numerics;
 using System.Text;
 
 namespace Data
 {
     public abstract class IDataBall
     {
-        public abstract double PosX { get;  }
-        public abstract double PosY { get;  }
-        public abstract double XSpeed { get; set; }
-        public abstract double YSpeed { get; set; }
+        public abstract Vector2 Position { get;}
+        public abstract Vector2 Speed { get; set; }
         public abstract bool HasCollided { get; set; }
         public abstract void Move();
 
