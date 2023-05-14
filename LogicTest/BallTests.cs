@@ -10,7 +10,7 @@ namespace LogicTest
     [TestClass]
     public class BallTests
     {
-        IBall ball = IBall.CreateBall(1,2,3);
+        IBall ball = IBall.CreateBall(1,2);
 
         [TestMethod]
         public void ConstructorTest()
@@ -23,7 +23,6 @@ namespace LogicTest
         {
             Assert.AreEqual(1, ball.PosX);
             Assert.AreEqual(2, ball.PosY);
-            Assert.AreEqual(3, ball.Radius);
         }
 
         [TestMethod]
@@ -33,13 +32,6 @@ namespace LogicTest
             ball.PosY = 7;
             Assert.AreEqual(5, ball.PosX);
             Assert.AreEqual(7, ball.PosY);
-        }
-
-        [TestMethod]
-        public void SetBallRadiusTest()
-        {
-            ball.Radius = 6;
-            Assert.AreEqual(6, ball.Radius);
         }
 
     }

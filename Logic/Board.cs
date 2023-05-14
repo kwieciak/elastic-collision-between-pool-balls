@@ -84,10 +84,10 @@ namespace Logic
         private void CheckBallsCollision(Object s, DataEventArgs e)
         {
             IDataBall me = (IDataBall)s;
-            if(!me.HasCollided)
+            lock (_locker)
             {
-                lock(_locker)
-                {
+                if (!me.HasCollided)
+                {  
                     foreach (IDataBall ball in dataAPI.GetAllBalls())
                     {
                         if (ball!=me)
@@ -101,11 +101,7 @@ namespace Logic
                 }
             }
         }
-        /*public void ApplyTempSpeed(IDataBall ball)
-        {
-            ball.YSpeed = ball.TempYSpeed;
-            ball.XSpeed = ball.TempXSpeed;
-        }*/
+
 
         private void ballCollision(IDataBall ball, IDataBall otherBall)
         {

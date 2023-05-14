@@ -47,10 +47,7 @@ namespace Data
         {
             while (true)
             {
-                lock (this)
-                {
-                     Move();
-                }
+                Move();
                 HasCollided = false;
                 await Task.Delay(10);
             }
