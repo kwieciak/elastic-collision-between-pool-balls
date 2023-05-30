@@ -10,15 +10,14 @@ namespace Data
     {
         public abstract Vector2 Position { get;}
         public abstract Vector2 Speed { get; set; }
-        public abstract bool HasCollided { get; set; }
-        public abstract bool ContinueMoving { get; set; }
-        public abstract void Move();
+
+        public abstract void Dispose();
 
         public abstract event EventHandler<DataEventArgs> ChangedPosition;
 
-        public static IDataBall CreateDataBall(int posX, int posY, int radius, int weight, int xSpeed, int ySpeed)
+        public static IDataBall CreateDataBall(int posX, int posY, int radius, int weight, int xSpeed, int ySpeed, object locker)
         {
-            return new DataBall(posX, posY, radius, weight, xSpeed, ySpeed);
+            return new DataBall(posX, posY, radius, weight, xSpeed, ySpeed, locker);
         }
     }
 }

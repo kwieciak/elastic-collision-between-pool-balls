@@ -40,7 +40,6 @@ namespace Logic
                 int x = random.Next(radius, sizeX - radius);
                 int y = random.Next(radius, sizeY - radius);
                 int weight = random.Next(3, 3);
-
                 int SpeedX;
                 do
                 {
@@ -53,14 +52,13 @@ namespace Logic
                     SpeedY = random.Next(-3, 3);
                 } while (SpeedY == 0);
 
-                IDataBall dataBall = dataAPI.AddDataBall(x, y, _BallRadius, weight, SpeedX, SpeedY);
+                IDataBall dataBall = dataAPI.AddDataBall(x, y, _BallRadius, weight, SpeedX, SpeedY, _locker);
                 Ball ball = new Ball(dataBall.Position.X, dataBall.Position.Y);
 
                 //dodajemy do eventu funkcje, ktore beda sie wywolywaly po wykonaniu Move(), bo wtedy jest PropertyChanged wywolywane
                 dataBall.ChangedPosition += ball.UpdateBall;        //ball to nasz ball w logice, nie w data
                 dataBall.ChangedPosition += CheckCollisionWithWall;
                 dataBall.ChangedPosition += CheckBallsCollision;
-
                 Balls.Add(ball);
             }
         }
@@ -69,16 +67,13 @@ namespace Logic
         {
             
             IDataBall ball = (IDataBall)s;
-            if (!ball.HasCollided)
+            if (ball.Position.X + ball.Speed.X + _BallRadius > dataAPI.Width || ball.Position.X + ball.Speed.X - _BallRadius < 0)
             {
-                if (ball.Position.X + ball.Speed.X + _BallRadius > dataAPI.Width || ball.Position.X + ball.Speed.X - _BallRadius < 0)
-                {
-                    ball.Speed = new Vector2(-ball.Speed.X, ball.Speed.Y);
-                }
-                if (ball.Position.Y + ball.Speed.Y + _BallRadius > dataAPI.Height || ball.Position.Y + ball.Speed.Y - _BallRadius < 0)
-                {
-                    ball.Speed = new Vector2(ball.Speed.X, -ball.Speed.Y);
-                }
+                ball.Speed = new Vector2(-ball.Speed.X, ball.Speed.Y);
+            }
+            if (ball.Position.Y + ball.Speed.Y + _BallRadius > dataAPI.Height || ball.Position.Y + ball.Speed.Y - _BallRadius < 0)
+            {
+                ball.Speed = new Vector2(ball.Speed.X, -ball.Speed.Y);
             }
         }
 
@@ -87,20 +82,17 @@ namespace Logic
             IDataBall me = (IDataBall)s;
             lock (_locker)
             {
-                if (!me.HasCollided)
-                {  
-                    foreach (IDataBall ball in dataAPI.GetAllBalls().ToArray())
+                foreach (IDataBall ball in dataAPI.GetAllBalls().ToArray())
+                {
+                    if (ball!=me)
                     {
-                        if (ball!=me)
+                        if (Math.Sqrt(Math.Pow(ball.Position.X - me.Position.X , 2) + Math.Pow(ball.Position.Y - me.Position.Y, 2)) <= 2*_BallRadius) 
                         {
-                            if (Math.Sqrt(Math.Pow(ball.Position.X - me.Position.X , 2) + Math.Pow(ball.Position.Y - me.Position.Y, 2)) <= 2*_BallRadius) 
-                            {
-                                ballCollision(me, ball);
-                            }
+                            ballCollision(me, ball);
                         }
                     }
                 }
-            }
+           }
         }
 
 
@@ -119,9 +111,6 @@ namespace Logic
 
                 ball.Speed = new Vector2(ballXMovement, ballYMovement);
                 otherBall.Speed = new Vector2(otherBallXMovement, otherBallYMovement);
-
-                ball.HasCollided = true;
-                otherBall.HasCollided = true;
             }
         }
 
@@ -130,7 +119,7 @@ namespace Logic
         {
             foreach(IDataBall ball in dataAPI.GetAllBalls().ToArray())
             {
-                ball.ContinueMoving = false;
+                ball.Dispose();
             }
             Balls.Clear();
             dataAPI.RemoveAllBalls();

@@ -28,9 +28,9 @@ namespace Data
             Balls.Clear();
         }
 
-        public override IDataBall AddDataBall(int xPosition, int yPosition, int radius, int weight, int xSpeed, int ySpeed)
+        public override IDataBall AddDataBall(int xPosition, int yPosition, int radius, int weight, int xSpeed, int ySpeed, object locker)
         {
-            IDataBall ballData = IDataBall.CreateDataBall(xPosition, yPosition, radius, weight, xSpeed, ySpeed);
+            IDataBall ballData = IDataBall.CreateDataBall(xPosition, yPosition, radius, weight, xSpeed, ySpeed,locker);
             Balls.Add(ballData);
             return ballData;
         }
