@@ -23,12 +23,16 @@ namespace Data
         public override Vector2 Speed { get; set; }
 
         private bool ContinueMoving;
+        private DataLoggerAPI _logger;
+        public override int ID { get; }
 
-        public DataBall(int posX, int posY,  int radius, int weight, int xSpeed, int ySpeed, object locker)
+        public DataBall(int posX, int posY, int radius, int weight, int xSpeed, int ySpeed, DataLoggerAPI logger, int id)
         {
+            ID = id;
             _position = new Vector2(posX, posY);
             Speed = new Vector2(xSpeed, ySpeed);
             ContinueMoving = true;
+            this._logger = logger;
             Task.Run(StartMovement);
         }
 
@@ -40,6 +44,7 @@ namespace Data
             {
                 stopWatch.Start();
                 Move();
+                _logger.AddBall(this);
                 stopWatch.Stop();
                 if (baseMovementTime > (int)stopWatch.ElapsedMilliseconds)
                 {
