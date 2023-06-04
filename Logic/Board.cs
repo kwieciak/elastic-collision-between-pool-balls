@@ -52,7 +52,7 @@ namespace Logic
                     SpeedY = random.Next(-3, 3);
                 } while (SpeedY == 0);
 
-                IDataBall dataBall = dataAPI.AddDataBall(x, y, _BallRadius, weight, SpeedX, SpeedY, _locker);
+                IDataBall dataBall = dataAPI.AddDataBall(x, y, _BallRadius, weight, SpeedX, SpeedY, _locker, i);
                 Ball ball = new Ball(dataBall.Position.X, dataBall.Position.Y);
 
                 //dodajemy do eventu funkcje, ktore beda sie wywolywaly po wykonaniu Move(), bo wtedy jest PropertyChanged wywolywane
