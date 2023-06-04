@@ -17,9 +17,5 @@ namespace Data
 
         public abstract event EventHandler<DataEventArgs> ChangedPosition;
 
-        public static IDataBall CreateDataBall(int posX, int posY, int radius, int weight, int xSpeed, int ySpeed, DataLoggerAPI logger, int id)
-        {
-            return new DataBall(posX, posY, radius, weight, xSpeed, ySpeed, logger, id);
-        }
     }
 }
