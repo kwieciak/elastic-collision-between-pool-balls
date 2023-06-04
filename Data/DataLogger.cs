@@ -22,22 +22,15 @@ namespace Data
 
         internal DataLogger() 
         {
-            string path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
-            string loggersDirectory = Path.Combine(path, "Loggers");
+            string tempPath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
+            string loggersDirectory = Path.Combine(tempPath, "Loggers");
             _pathToFile = Path.Combine(loggersDirectory, "DataBallLog.json");
             _ballsConcurrentQueue = new ConcurrentQueue<JObject>();
 
             if (File.Exists(_pathToFile))
             {
-                try
-                {
-                    string input = File.ReadAllText(_pathToFile);
-                    _logArray = JArray.Parse(input);
-                }
-                catch (JsonReaderException)
-                {
-                    _logArray = new JArray();
-                }
+                string input = File.ReadAllText(_pathToFile);
+                _logArray = JArray.Parse(input);
             }
             else
             {
@@ -54,6 +47,7 @@ namespace Data
             {
                 JObject log = JObject.FromObject(ball.Position);
                 log["Time: "] = DateTime.Now.ToString("HH:mm:ss");
+                log.Add("ID", ball.ID);
 
                 _ballsConcurrentQueue.Enqueue(log);
                 if (_logerTask == null || _logerTask.IsCompleted)

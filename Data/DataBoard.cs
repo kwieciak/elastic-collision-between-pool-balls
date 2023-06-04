@@ -18,6 +18,7 @@ namespace Data
         public DataBoard(int width, int height) {
             Width = width; 
             Height = height;
+            _logger.AddBoard(this);
         }
 
 
