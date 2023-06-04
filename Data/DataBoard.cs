@@ -33,7 +33,7 @@ namespace Data
 
         public override IDataBall AddDataBall(int xPosition, int yPosition, int radius, int weight, int xSpeed, int ySpeed, object locker, int id)
         {
-            IDataBall ballData = IDataBall.CreateDataBall(xPosition, yPosition, radius, weight, xSpeed, ySpeed,locker, _logger, id);
+            IDataBall ballData = IDataBall.CreateDataBall(xPosition, yPosition, radius, weight, xSpeed, ySpeed, _logger, id);
             Balls.Add(ballData);
             return ballData;
         }

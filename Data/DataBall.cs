@@ -26,7 +26,7 @@ namespace Data
         private DataLoggerAPI _logger;
         public override int ID { get; }
 
-        public DataBall(int posX, int posY,  int radius, int weight, int xSpeed, int ySpeed, object locker, DataLoggerAPI logger, int id)
+        public DataBall(int posX, int posY, int radius, int weight, int xSpeed, int ySpeed, DataLoggerAPI logger, int id)
         {
             ID = id;
             _position = new Vector2(posX, posY);
@@ -44,8 +44,8 @@ namespace Data
             {
                 stopWatch.Start();
                 Move();
-                stopWatch.Stop();
                 _logger.AddBall(this);
+                stopWatch.Stop();
                 if (baseMovementTime > (int)stopWatch.ElapsedMilliseconds)
                 {
                     await Task.Delay(baseMovementTime - (int)stopWatch.ElapsedMilliseconds);

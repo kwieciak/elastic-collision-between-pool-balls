@@ -17,14 +17,14 @@ namespace LogicTest
             public override Vector2 Position { get => _position; }
 
             public override Vector2 Speed { get; set; }
-            public override bool HasCollided { get; set; }
-            public override bool ContinueMoving { get; set; }
+
+            public override int ID => throw new NotImplementedException();
 
             public override event EventHandler<DataEventArgs> ChangedPosition;
 
-            public override void Move()
+            public override void Dispose()
             {
-                this._position = Vector2.Zero;
+                throw new NotImplementedException();
             }
         }
 
@@ -40,7 +40,8 @@ namespace LogicTest
 
             public override int Height { get; }
 
-            public override IDataBall AddDataBall(int xPosition, int yPosition, int radius, int weight, int xSpeed, int ySpeed)
+
+            public override IDataBall AddDataBall(int xPosition, int yPosition, int radius, int weight, int xSpeed, int ySpeed, object locker, int id)
             {
                 return new FakeDataBall();
             }
