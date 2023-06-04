@@ -29,8 +29,16 @@ namespace Data
 
             if (File.Exists(_pathToFile))
             {
-                string input = File.ReadAllText(_pathToFile);
-                _logArray = JArray.Parse(input);
+                try
+                {
+                    string input = File.ReadAllText(_pathToFile);
+                    _logArray = JArray.Parse(input);
+                }
+                catch(JsonReaderException ex)
+                {
+                    _logArray = new JArray();
+                }
+                
             }
             else
             {
@@ -46,8 +54,8 @@ namespace Data
             try
             {
                 JObject log = JObject.FromObject(ball.Position);
-                log["Time: "] = DateTime.Now.ToString("HH:mm:ss");
-                log.Add("ID", ball.ID);
+                log["Time"] = DateTime.Now.ToString("HH:mm:ss");
+                log.Add("Ball ID", ball.ID);
 
                 _ballsConcurrentQueue.Enqueue(log);
                 if (_logerTask == null || _logerTask.IsCompleted)
@@ -66,7 +74,8 @@ namespace Data
             ClearLogFile();
             JObject log = JObject.FromObject(board);
             _logArray.Add(log);
-            String diagnosticData = JsonConvert.SerializeObject(_logArray, Formatting.Indented);
+            string diagnosticData = JsonConvert.SerializeObject(_logArray, Formatting.Indented);
+
             _writeMutex.WaitOne();
             try
             {
@@ -80,6 +89,7 @@ namespace Data
 
         private void SaveDataToLog()
         {
+            _writeMutex.WaitOne();
             while (_ballsConcurrentQueue.TryDequeue(out JObject ball)) 
             {
                 _logArray.Add(ball);
