@@ -13,7 +13,7 @@ namespace Data
 
         private List<IDataBall> Balls = new List<IDataBall>();
 
-        private DataLoggerAPI _logger = DataLoggerAPI.CreateLogger();
+        private DataLogger _logger = new DataLogger();
 
         public DataBoard(int width, int height) {
             Width = width; 
@@ -33,7 +33,7 @@ namespace Data
 
         public override IDataBall AddDataBall(int xPosition, int yPosition, int radius, int weight, int xSpeed, int ySpeed, object locker, int id)
         {
-            IDataBall ballData = IDataBall.CreateDataBall(xPosition, yPosition, radius, weight, xSpeed, ySpeed, _logger, id);
+            IDataBall ballData = new DataBall(xPosition, yPosition, radius, weight, xSpeed, ySpeed, _logger, id);
             Balls.Add(ballData);
             return ballData;
         }

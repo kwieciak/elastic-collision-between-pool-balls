@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    internal class DataLogger : DataLoggerAPI
+    internal class DataLogger
     {
         private ConcurrentQueue<JObject> _ballsConcurrentQueue;
         private JArray _logArray;
@@ -34,7 +34,7 @@ namespace Data
                     string input = File.ReadAllText(_pathToFile);
                     _logArray = JArray.Parse(input);
                 }
-                catch(JsonReaderException ex)
+                catch(Exception ex)
                 {
                     _logArray = new JArray();
                 }
@@ -48,7 +48,7 @@ namespace Data
             }
         }
 
-        public override void AddBall(IDataBall ball)
+        public void AddBall(IDataBall ball)
         {
             _queueMutex.WaitOne();
             try
@@ -69,7 +69,7 @@ namespace Data
             }
         }
 
-        public override void AddBoard(IDataBoard board)
+        public void AddBoard(IDataBoard board)
         {
             ClearLogFile();
             JObject log = JObject.FromObject(board);
@@ -80,6 +80,10 @@ namespace Data
             try
             {
                 File.WriteAllText(_pathToFile, diagnosticData);
+            }
+            catch(Exception e)
+            {
+                
             }
             finally
             { 
