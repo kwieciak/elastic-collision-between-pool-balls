@@ -36,11 +36,10 @@ namespace Data
             Task.Run(SaveToFile);
         }
 
-        public void AddBall(Vector2 position,int ID)
+        public void AddBall(DataBall ball)
         {
-            JObject log = JObject.FromObject(position);
+            JObject log = JObject.FromObject(ball);
             log["Time"] = DateTime.Now.ToString("HH:mm:ss");
-            log.Add("Ball ID", ID);
             if(_ballsConcurrentQueue.Count < 1000)
             {
                 _ballsConcurrentQueue.Enqueue(log);
@@ -62,7 +61,7 @@ namespace Data
             int i = 0;
             while (true)
             {
-                String diagnosticData = "";
+                string diagnosticData = "";
                 if (_ballsConcurrentQueue.TryDequeue(out JObject ball))
                 {
                     diagnosticData = "\"Log" + i + "\":" + JsonConvert.SerializeObject(ball);

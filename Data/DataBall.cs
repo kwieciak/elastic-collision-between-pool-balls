@@ -44,7 +44,7 @@ namespace Data
             {
                 stopWatch.Start();
                 Move();
-                _ = Task.Run(() => _logger.AddBall(this._position, this.ID));
+                _ = Task.Run(() => _logger.AddBall(this));
                 stopWatch.Stop();
                 if (baseMovementTime > (int)stopWatch.ElapsedMilliseconds)
                 {
