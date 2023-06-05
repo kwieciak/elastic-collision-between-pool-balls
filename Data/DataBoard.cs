@@ -13,12 +13,14 @@ namespace Data
 
         private List<IDataBall> Balls = new List<IDataBall>();
 
-        private DataLogger _logger = new DataLogger();
+        private DataLogger _logger;
 
         public DataBoard(int width, int height) {
             Width = width; 
             Height = height;
+            _logger = new DataLogger();
             _logger.AddBoard(this);
+            
         }
 
 
