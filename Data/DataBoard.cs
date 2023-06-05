@@ -29,6 +29,7 @@ namespace Data
         public override void RemoveAllBalls()
         {
             Balls.Clear();
+            _logger.Dispose();
         }
 
         public override IDataBall AddDataBall(int xPosition, int yPosition, int radius, int weight, int xSpeed, int ySpeed, object locker, int id)

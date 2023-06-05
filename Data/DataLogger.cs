@@ -8,10 +8,11 @@ using System.Threading;
 using System.IO;
 using System.Data;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Data
 {
-    internal class DataLogger
+    internal class DataLogger:IDisposable
     {
         private ConcurrentQueue<JObject> _ballsConcurrentQueue;
         private JArray _logArray;
@@ -24,9 +25,9 @@ namespace Data
         {
             string tempPath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
             string loggersDirectory = Path.Combine(tempPath, "Loggers");
-            _pathToFile = Path.Combine(loggersDirectory, "DataBallLog.json");
+            _pathToFile = Path.Combine(loggersDirectory, "DataBallLog1.json");
             _ballsConcurrentQueue = new ConcurrentQueue<JObject>();
-
+            Task.Run(SaveToFile);
             if (File.Exists(_pathToFile))
             {
                 try
@@ -44,7 +45,9 @@ namespace Data
             {
                 _logArray = new JArray();
                 FileStream file = File.Create(_pathToFile);
+                file.Dispose();
                 file.Close();
+
             }
         }
 
@@ -56,11 +59,13 @@ namespace Data
                 JObject log = JObject.FromObject(ball.Position);
                 log["Time"] = DateTime.Now.ToString("HH:mm:ss");
                 log.Add("Ball ID", ball.ID);
-
-                _ballsConcurrentQueue.Enqueue(log);
-                if (_logerTask == null || _logerTask.IsCompleted)
+                if(_ballsConcurrentQueue.Count < 1000)
                 {
-                    _logerTask = Task.Run(SaveDataToLog);
+                    _ballsConcurrentQueue.Enqueue(log);
+                }
+                else
+                {
+                    Console.WriteLine("XD");
                 }
             }
             finally
@@ -71,37 +76,23 @@ namespace Data
 
         public void AddBoard(IDataBoard board)
         {
-            ClearLogFile();
             JObject log = JObject.FromObject(board);
+            _ballsConcurrentQueue.Enqueue(log);
             _logArray.Add(log);
-            string diagnosticData = JsonConvert.SerializeObject(_logArray, Formatting.Indented);
-
-            _writeMutex.WaitOne();
-            try
-            {
-                File.WriteAllText(_pathToFile, diagnosticData);
-            }
-            catch(Exception e)
-            {
-                
-            }
-            finally
-            { 
-                _writeMutex.ReleaseMutex(); 
-            } 
         }
 
         private void SaveDataToLog()
         {
+
             _writeMutex.WaitOne();
+            String diagnosticData = JsonConvert.SerializeObject(_logArray, Formatting.Indented);
             while (_ballsConcurrentQueue.TryDequeue(out JObject ball)) 
             {
-                _logArray.Add(ball);
+                diagnosticData = JsonConvert.SerializeObject(ball);
             }
-            String diagnosticData = JsonConvert.SerializeObject(_logArray, Formatting.Indented);
             try
             {
-                File.WriteAllText(_pathToFile, diagnosticData);
+                File.AppendAllText(_pathToFile, diagnosticData + "AA" + "\n");
             }
             finally
             {
@@ -115,13 +106,64 @@ namespace Data
             _writeMutex.WaitOne();
             try
             {
-                _logArray.Clear();
                 File.WriteAllText(_pathToFile, string.Empty);
             }
             finally
             {
                 _writeMutex.ReleaseMutex();
             }
+        }
+        private void SaveToFile()
+        {
+            bool appended = false;
+            while(!appended) 
+            {
+                try
+                {
+                    ClearLogFile();
+                    File.AppendAllText(_pathToFile, "{");
+                    appended = true;
+                }
+                catch (Exception ex)
+                {
+                    //nothing
+                }
+                
+            }
+            
+            while (true)
+            {
+                String diagnosticData = "";
+                while (_ballsConcurrentQueue.TryDequeue(out JObject ball))
+                {
+                    diagnosticData = JsonConvert.SerializeObject(ball);
+                    try
+                    {
+                        File.AppendAllText(_pathToFile, diagnosticData + ",\n");
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            bool saved = false;
+            while (!saved)
+            {
+                try
+                {
+                    File.AppendAllText(_pathToFile, "}");
+                    saved = true;
+                }
+                catch(Exception ex)
+                {
+
+                }
+            } 
         }
     }
 }
