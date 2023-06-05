@@ -21,7 +21,6 @@ namespace DataTests
             IDataBall dataBall = board.AddDataBall(1, 2, 3, 4, 5, 6, null, 1);
             Vector2 vector = new Vector2(5, 6);
             Assert.AreEqual(dataBall.Speed, vector);
-
         }
 
 

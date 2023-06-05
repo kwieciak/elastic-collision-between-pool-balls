@@ -9,6 +9,7 @@ using System.IO;
 using System.Data;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace Data
 {
@@ -17,60 +18,56 @@ namespace Data
         private ConcurrentQueue<JObject> _ballsConcurrentQueue;
         private JArray _logArray;
         private string _pathToFile;
+        private string _pathToFile2;
         private Mutex _writeMutex = new Mutex();
         private Mutex _queueMutex = new Mutex();
-        StreamWriter sw;
+        StreamWriter ballLogFile;
+        StreamWriter boardLogFile;
 
         internal DataLogger() 
         {
             string tempPath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
             string loggersDirectory = Path.Combine(tempPath, "Loggers");
-            _pathToFile = Path.Combine(loggersDirectory, "DataBallLog1.json");
+            _pathToFile = Path.Combine(loggersDirectory, "DataBallLog.json");
+            _pathToFile2 = Path.Combine(loggersDirectory, "BoardLog.json");
             _ballsConcurrentQueue = new ConcurrentQueue<JObject>();
-            sw = File.CreateText(_pathToFile);
+            ballLogFile = File.CreateText(_pathToFile);
+            boardLogFile = File.CreateText(_pathToFile2);
             Task.Run(SaveToFile);
         }
 
-        public void AddBall(IDataBall ball)
+        public void AddBall(Vector2 position,int ID)
         {
-            JObject log = JObject.FromObject(ball.Position);
+            JObject log = JObject.FromObject(position);
             log["Time"] = DateTime.Now.ToString("HH:mm:ss");
-            log.Add("Ball ID", ball.ID);
+            log.Add("Ball ID", ID);
             if(_ballsConcurrentQueue.Count < 1000)
             {
                 _ballsConcurrentQueue.Enqueue(log);
-            }
-            else
-            {
-                Console.WriteLine("XD");
             }
         }
 
         public void AddBoard(IDataBoard board)
         {
             JObject log = JObject.FromObject(board);
-            string data = JsonConvert.SerializeObject(log) +",";
-            sw.WriteLine(data);
+            string data = JsonConvert.SerializeObject(log);
+            boardLogFile.Write(data);
+            boardLogFile.Close();
         }
 
         private void SaveToFile()
         {
             bool appended = false;
-            sw.Write("{");
+            ballLogFile.Write("{");
+            int i = 0;
             while (true)
             {
                 String diagnosticData = "";
-                while (_ballsConcurrentQueue.TryDequeue(out JObject ball))
+                if (_ballsConcurrentQueue.TryDequeue(out JObject ball))
                 {
-                    diagnosticData = JsonConvert.SerializeObject(ball);
-                    try
-                    {
-                        sw.WriteLine(diagnosticData + ",");
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
+                    diagnosticData = "\"Log" + i + "\":" + JsonConvert.SerializeObject(ball);
+                    ballLogFile.WriteLine(diagnosticData + ",");
+                    i++;
                 }
             }
             
@@ -81,16 +78,9 @@ namespace Data
             bool saved = false;
             while (!saved)
             {
-                try
-                {
-                    sw.WriteLine("}");
-                    sw.Close();
-                    saved = true;
-                }
-                catch(Exception ex)
-                {
-
-                }
+                ballLogFile.WriteLine("}");
+                ballLogFile.Close();
+                saved = true;
             } 
         }
     }
